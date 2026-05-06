@@ -39,7 +39,9 @@ Since the LAN segment details were already provided in the traffic capture, I us
 After applying these filters, I checked Statistics → Endpoints to identify which internal host was generating the most traffic. I observed that the IP address 10.6.13.133 had a much higher amount of data transfer compared to other hosts. Based on this unusual traffic volume, I suspected 10.6.13[.]133 as the infected system and continued my analysis focusing on this host.
 
 
-<img width="452" height="266" alt="image" src="https://github.com/user-attachments/assets/7db30643-04bc-4f78-af61-1971d8ba3b8f" />
+
+<img width="819" height="473" alt="image" src="https://github.com/user-attachments/assets/b1d1a8b2-5614-4bfa-a911-674550077bdc" />
+
 
 
 After identifying `10.6.13.133` as the suspected infected host, I updated the Wireshark display filter to focus only on this IP address by using
@@ -49,7 +51,9 @@ After identifying `10.6.13.133` as the suspected infected host, I updated the Wi
  Then i started analyzing which protocols were consuming the most traffic from this host. To do this, I navigated to Statistics → Protocol Hierarchy, where I observed that TCP traffic carrying TLS accounted for the highest amount of data usage. HTTP traffic was the second highest, but it was much smaller compared to TLS traffic.
 
 
-<img width="462" height="192" alt="image" src="https://github.com/user-attachments/assets/b7404c9e-82b2-4789-a439-1ddeba0be804" />
+
+<img width="825" height="342" alt="image" src="https://github.com/user-attachments/assets/92ff2603-5d84-4e1e-ba24-bd62f268e084" />
+
 
 
 Based on this observation, I refined the filter further to focus on HTTP requests and TLS handshakes using the following filter:
@@ -64,11 +68,17 @@ The first suspicious domain I identified was hillcoweb[.]com. At first, it appea
 On VirusTotal, I was able to view detailed information about the domain, including detection results and reference links from security vendors and community reports. From these references, I learned that this domain has been associated with malicious activity and is commonly linked to payload delivery
 
 
-<img width="538" height="140" alt="image" src="https://github.com/user-attachments/assets/68145b02-2959-40f6-9491-d0d5b32cdba5" />
 
-<img width="553" height="81" alt="image" src="https://github.com/user-attachments/assets/fc2568cb-9455-4104-9c1f-2254c1a18cf4" />
+<img width="960" height="257" alt="image" src="https://github.com/user-attachments/assets/56d245f4-c4a4-4784-a2d4-aad0fbf1c7d9" />
 
-<img width="554" height="417" alt="image" src="https://github.com/user-attachments/assets/9c4ebf5a-afa7-4bc9-af40-c3e930e9841d" />
+
+
+<img width="1000" height="147" alt="image" src="https://github.com/user-attachments/assets/76f21214-ea2c-487d-a316-15fc01f9b439" />
+
+
+
+<img width="795" height="576" alt="image" src="https://github.com/user-attachments/assets/e4af44c1-cd1d-43c2-b412-65d7bc690908" />
+
 
 From internet research, I learned that hillcoweb[.]com is part of the social-engineering stage of the attack. The website displays a fake system or update alert to mislead the user and instructs them to copy and execute a malicious command or script. The actual malware payload and command-and-control (C2) communication occur later through a different domain.
 
@@ -77,15 +87,20 @@ I continued my analysis by reviewing the PCAP file in chronological order to obs
 I observed new suspicious activity in the traffic capture after the hillcoweb[.]com interaction. The domain event-time-microsoft[.]org appeared shortly afterward and was flagged as malicious based on external reputation checks. This domain was involved in communication related to PowerShell activity, indicating that scripts were being sent from the infected host and responses were received from the server. During further research, I found references on ThreatFox, where event-time-microsoft[.]org is clearly documented and linked to hillcoweb[.]com, confirming that both domains are part of the same infection chain and ClickFix-style attack infrastructure.
 
 
-<img width="524" height="160" alt="image" src="https://github.com/user-attachments/assets/14ab8453-7c77-47bb-b851-9a0a05365f30" />
+
+<img width="945" height="292" alt="image" src="https://github.com/user-attachments/assets/861a1f02-01d1-4d3c-b286-562efce26e5c" />
 
 
-<img width="528" height="233" alt="image" src="https://github.com/user-attachments/assets/14fbb99d-9f01-4481-92b3-05f4d8a50ddf" />
+
+<img width="950" height="434" alt="image" src="https://github.com/user-attachments/assets/2fbc5818-e8e3-48b0-bbad-d7efe13181df" />
+
 
 
 In addition, another domain, windows-msgas[.]com, was observed and was also marked as suspicious  by external reputation. Most of the HTTP traffic after this stage occurred between the infected host and windows-msgas[.]com. Although not all HTTP content was readable, I was able to identify first request  one HTTP stream containing clear text information that appeared to include system or device infromation details being sent from the host to the remote server. This behavior suggests post-infection activity involving data transmission from the infected system.
 
-<img width="533" height="148" alt="image" src="https://github.com/user-attachments/assets/b63c3ba2-e095-4db8-b683-9e1d35ec5d1c" />
+
+<img width="959" height="270" alt="image" src="https://github.com/user-attachments/assets/6a6a012e-f665-4c9f-822e-233775fe4a94" />
+
 
 Among them, the domain windows-msgas[.]com was observed and was also marked as suspicious based on external reputation checks. Most of the HTTP traffic during this post-infection stage occurred between the infected host and windows-msgas[.]com. 
 
@@ -94,13 +109,19 @@ Although not all HTTP content was readable, I was able to clearly analyze the on
 The server then responded within the same HTTP session with a large, obfuscated PowerShell script, indicating delivery of a second-stage payload to the victim system. Following this exchange, multiple additional HTTP POST requests were observed;however, their contents were not readable, likely due to the use of the application/octet-stream content type, indicating binary or encoded data transmission.
 
 
-<img width="520" height="76" alt="image" src="https://github.com/user-attachments/assets/be4fc799-7589-4273-9cbe-dec3a75e5a63" />
+
+<img width="936" height="138" alt="image" src="https://github.com/user-attachments/assets/19d5311f-9b22-441d-ad84-d59e49e42ab5" />
 
 
-<img width="438" height="238" alt="image" src="https://github.com/user-attachments/assets/3b81236d-8af3-4084-b808-d9256635ca01" />
 
 
-<img width="520" height="242" alt="image" src="https://github.com/user-attachments/assets/2f2254ec-0ec0-46b5-ba47-59701b45edc2" />
+<img width="783" height="421" alt="image" src="https://github.com/user-attachments/assets/1f896607-c41b-4cbc-a414-9b3f544cb6ae" />
+
+
+
+
+<img width="937" height="438" alt="image" src="https://github.com/user-attachments/assets/96fac201-8963-4367-89c2-2e46c8459648" />
+
 
 
 I observed that the HTTP Host header was set to eventdata-microsoft[.]live, a domain made to look like a Microsoft service, likely to make the malicious traffic appear legitimate and avoid detection.
