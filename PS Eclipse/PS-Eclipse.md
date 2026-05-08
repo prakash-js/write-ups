@@ -20,3 +20,27 @@ Happy Hunting!
 
 > OUTSTANDING_GUTTER.exe
 
+**Explaination:**
+
+```
+SPL:
+
+index="*" EventCode="1"
+| fields Image
+| search [ search index="*" EventCode="3" | fields Image ]
+| stats count by Image
+```
+Direct evidence of the downloaded file was not clearly available in the logs. Based on the scenario description mentioning ransomware behavior and unusual file extensions, I suspected that the malicious file had already been executed on the endpoint.
+
+To investigate this, I focused on:
+
+Sysmon EventCode 1 — Process Creation
+Sysmon EventCode 3 — Network Connection
+
+Ransomware commonly establishes network connections during execution, either for command-and-control communication, payload retrieval, or lateral movement. By correlating processes that both executed and generated network activity, I attempted to identify suspicious binaries.
+
+The query revealed a process named:
+
+`OUTSTANDING_GUTTER.exe`
+
+The binary was executed from the Temp directory, which is commonly abused by malware for staging and execution. Due to the suspicious filename, execution behavior, and associated network activity, this binary was identified as the likely malicious file downloaded to the endpoint.
