@@ -56,7 +56,10 @@ The binary was executed from the Temp directory, which is commonly abused by mal
 
 To find from where the malicious binary was downloaded, first I searched for the file creation event related to OUTSTANDING_GUTTER.exe.
 
-`index="*" EventCode="11" ComputerName="DESKTOP-TBV8NEF" "OUTSTANDING_GUTTER.exe"`
+```
+index="*" EventCode="11" ComputerName="DESKTOP-TBV8NEF" "OUTSTANDING_GUTTER.exe"`
+
+```
 
 After I saw the results, I checked the earliest time event.Where i found 
 
