@@ -175,7 +175,14 @@ By searching for PowerShell scripts (.ps1) dropped in C:\Windows\Temp\ using Tar
 
 ---
 
+## The malicious script was flagged as malicious. What do you think was the actual name of the malicious script?
+> BlackSun.ps1
 
+To identify the actual name of the malicious script, I searched for the file hash of script.ps1 using TargetFilename filtered to C:\Windows\Temp\script.ps1. The Hashes field returned the cryptographic hash value of the file.
 
+I then took that hash value and submitted it to VirusTotal — a threat intelligence platform that checks files against multiple antivirus engines. VirusTotal matched the hash to a known malicious sample, which revealed the original name of the malicious script."
 
+<img width="544" height="244" alt="image" src="https://github.com/user-attachments/assets/5fcced08-5f46-4005-8be1-2984ba2bb55d" />
+
+---
 
