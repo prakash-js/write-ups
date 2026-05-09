@@ -151,7 +151,7 @@ The parent process being the encoded PowerShell confirms this was part of the ma
 The binary ran as NT AUTHORITY\SYSTEM — confirmed by /RU SYSTEM in the /Create command.
 
 ---
-The suspicious binary connected to a remote server. What address did it connect to? Add http:// to your answer & defang the URL.
+## The suspicious binary connected to a remote server. What address did it connect to? Add http:// to your answer & defang the URL.
 > hxxp[://]9030-181-215-214-32[.]ngrok[.]io
 
 
@@ -161,7 +161,17 @@ index="*"  Image="C:\\Windows\\Temp\\OUTSTANDING_GUTTER.exe" TaskCategory="Dns q
 ```
 To identify the remote server the binary connected to, I searched for DNS query events (TaskCategory="Dns query (rule: DnsQuery)") generated specifically by OUTSTANDING_GUTTER.exe. The QueryName field revealed the domain name the malicious binary attempted to resolve, confirming it connected.
 
+---
+## The malicious script was flagged as malicious. What do you think was the actual name of the malicious script?
+> script.ps1
 
+```
+index="*"
+| stats count by TargetFilename
+| where like(TargetFilename, "C:\\Windows\\Temp\\%.ps1")
+```
+
+By searching for PowerShell scripts (.ps1) dropped in C:\Windows\Temp\ using TargetFilename, the query revealed that only one executable was present in that directory alongside the malicious binary.
 
 
 
