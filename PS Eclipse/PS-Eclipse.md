@@ -171,6 +171,8 @@ To identify the remote server the binary connected to, I searched for DNS query 
 ## The malicious script was flagged as malicious. What do you think was the actual name of the malicious script?
 > script.ps1
 
+**Explanation:**
+
 ```
 index="*"
 | stats count by TargetFilename
