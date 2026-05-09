@@ -165,7 +165,7 @@ The binary ran as NT AUTHORITY\SYSTEM — confirmed by /RU SYSTEM in the /Create
 index="*"  Image="C:\\Windows\\Temp\\OUTSTANDING_GUTTER.exe" TaskCategory="Dns query (rule: DnsQuery)"
 | table QueryName
 ```
-To identify the remote server the binary connected to, I searched for DNS query events (TaskCategory="Dns query (rule: DnsQuery)") generated specifically by OUTSTANDING_GUTTER.exe. The QueryName field revealed the domain name the malicious binary attempted to resolve, confirming it connected.
+To identify the remote server the binary connected to, I searched for DNS query events (TaskCategory="Dns query (rule: DnsQuery)") generated specifically by OUTSTANDING_GUTTER.exe. The QueryName field revealed the domain name the malicious binary attempted to resolve, confirming it connected to the C2 server.
 
 ---
 ## The malicious script was flagged as malicious. What do you think was the actual name of the malicious script?
