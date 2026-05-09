@@ -112,6 +112,9 @@ This indicates that PowerShell was used to download and create the suspicious ex
 
 > "C:\Windows\system32\schtasks.exe" /Create /TN OUTSTANDING_GUTTER.exe /TR C:\Windows\Temp\COUTSTANDING_GUTTER.exe /SC ONEVENT /EC Application /MO *[System/EventID=777] /RU SYSTEM /f
 
+**Explaination:**
+
+
 Where we can see the command is from the decoded PowerShell command. After decoding the encoded PowerShell payload, I found the command used to configure the suspicious binary to run with elevated privileges.
 
 The following command was present in the decoded payload:
@@ -185,4 +188,28 @@ I then took that hash value and submitted it to VirusTotal — a threat intellig
 <img width="544" height="244" alt="image" src="https://github.com/user-attachments/assets/5fcced08-5f46-4005-8be1-2984ba2bb55d" />
 
 ---
+## A ransomware note was saved to disk, which can serve as an IOC. What is the full path to which the ransom note was saved?
+> C:\Users\keegan\Downloads\vasg6b0wmw029hd\BlackSun_README.txt
+
+Since ransomware typically drops a ransom note as a .txt file, I searched for any .txt files created on the system using a wildcard search on TargetFilename. This revealed a file named BlackSun_README.txt
+```
+index="*" "*.txt"
+```
+
+Since I already identified the malware as BlackSun Ransomware, I searched online and confirmed that BlackSun_README.txt is the default ransom note filename dropped by this ransomware family.
+```
+index="*" "BlackSun_README.txt"
+```
+
+---
+
+**Explanation:**
+## The script saved an image file to disk to replace the user's desktop wallpaper, which can also serve as an IOC. What is the full path of the image?
+> C:\Users\Public\Pictures\blacksun.jpg
+
+```
+index="*" "blacksun.jpg"
+```
+
+Since I had already researched BlackSun Ransomware during the previous question, I knew that it drops a wallpaper image named blacksun.jpg to replace the victim's desktop background. I used this knowledge to search directly in Splunk for any reference to `blacksun.jpg`, which revealed the full path where the image was saved on disk.
 
