@@ -173,6 +173,8 @@ index="*"
 
 By searching for PowerShell scripts (.ps1) dropped in C:\Windows\Temp\ using TargetFilename, the query revealed that only one executable was present in that directory alongside the malicious binary.
 
+---
+
 
 
 
