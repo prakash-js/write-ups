@@ -1,4 +1,9 @@
+### KQL (Kusto): Introduction
 
+--- 
+## Taks 1
+### Q1) Let's go!
+> No answer needed
 
 ## Task2 
 
@@ -72,7 +77,7 @@ SecurityEvent
 **Explaination :**
 The where operator filters the logs and searches for records where, So the query is specifically looking for activity related to the JBOX00$ account.
 
-### Task 5
+## Task 5
 
 ## Q1) What is the name of the table queried?
 > SecurityEvent
@@ -90,7 +95,7 @@ The query uses
 This creates a value called EventCount that stores the count of events for each computer.
 
 
-### Task 6
+## Task 6
 
 ### What are we searching for in the SecurityEvent table on the first query?
 > failed login attempts
