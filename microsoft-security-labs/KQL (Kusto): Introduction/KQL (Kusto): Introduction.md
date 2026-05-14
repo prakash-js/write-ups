@@ -11,7 +11,7 @@
 ### Q1 In addition to being a SIEM solution, what else is Microsoft Sentinel? (use the abbreviation)
 > SOAR
 
-** Explaination :**
+**Explaination :**
 
 - Microsoft Sentinel acts as a SIEM by collecting, monitoring, and analyzing security logs from multiple sources to detect threats and suspicious activities.
 - Microsoft Sentinel also functions as a SOAR platform by automating security responses, orchestrating workflows, and reducing manual incident handling through playbooks and automated actions.
@@ -19,7 +19,7 @@
 ### Q2 How does MS Sentinel support other security solutions that are not included in the built-in connectors? 
 > REST API Integration
 
-** Explaination :**
+**Explaination :**
 
 - Microsoft Sentinel supports third-party and unsupported security solutions through REST APIs, allowing external tools and applications to send security data, alerts, and incidents into Sentinel for monitoring and response.
 
@@ -32,7 +32,7 @@
 ### Q1 What initial service was KQL created for?
 > Azure Data Explorer
 
-** Explaination :**
+**Explaination :**
 
 - Kusto Query Language (KQL) was originally created for the Azure Data Explorer (Kusto) service at Microsoft. It was designed to efficiently analyze massive amounts of telemetry, log, and monitoring data in real time.
 
