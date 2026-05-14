@@ -5,7 +5,7 @@
 ### Q1) Let's go!
 > No answer needed
 
-## Task2 
+## Task 2 
 
 ### Q1 ) In addition to being a SIEM solution, what else is Microsoft Sentinel? (use the abbreviation)
 > SOAR
