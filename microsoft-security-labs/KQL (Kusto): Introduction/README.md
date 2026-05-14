@@ -1,0 +1,3 @@
+# KQL (Kusto): Introduction — TryHackMe
+
+Learned the fundamentals of Kusto Query Language (KQL) and basic Microsoft Sentinel operations. This write-up covers core KQL operators, log filtering, aggregation, and querying SecurityEvent logs for threat hunting and security analysis. The lab also introduced SIEM and SOAR concepts, Log Analytics Workspace, and real-world examples such as failed login investigation using KQL queries.
