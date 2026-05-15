@@ -64,25 +64,32 @@ Each level has different responsibilities based on skill and experience.
 **Explaination :**
 
 ***SIEM*** 
+
 SIEM stands for Security Information and Event Management. SIEM is a security system that collects and correlates logs from different devices, analyzes them for suspicious activity, and generates alerts for security teams.
 
 ***SOAR***
+
 SOAR stands for Security Orchestration, Automation, and Response. SOAR acts like a SIEM by detecting threats and generating alerts, but it can also automate response actions such as blocking IPs, disabling accounts, creating tickets, and sending notifications.
 
 ***Microsoft Sentinel***
+
 Microsoft Sentinel is a cloud-native SIEM and SOAR solution that can collect, detect, investigate, and respond to security threats.
 
 `Collection:`
+
 Sentinel uses Data Connectors to collect logs and security data from different sources.
 
 `Detection:`
+
 Sentinel uses Analytics Rules to detect suspicious activities and generate alerts.
 An Analytics Rule is a rule that analyzes logs and creates alerts when suspicious activity is detected.
 
 `Investigation:`
+
 Sentinel helps analysts investigate incidents using dashboards, incidents, entities, and threat intelligence.
 
 `Response:`
+
 Sentinel uses Playbooks to automate response actions such as blocking IPs, disabling accounts, creating tickets, and sending notifications.
 
 ---
