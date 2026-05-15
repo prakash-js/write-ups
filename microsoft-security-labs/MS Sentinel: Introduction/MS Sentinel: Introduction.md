@@ -93,3 +93,85 @@ Sentinel helps analysts investigate incidents using dashboards, incidents, entit
 Sentinel uses Playbooks to automate response actions such as blocking IPs, disabling accounts, creating tickets, and sending notifications.
 
 ---
+
+# TASK 3 How Microsoft Sentinel Works
+
+### Q1) What is used to ingest data into Sentinel?
+> data connectors
+
+### Q2) Where are the ingested logs stored for further correlation and analysis?
+> log analytics workspaces
+
+### Q3) Workbooks are essentially _______ used for visualization.
+> dashboards
+
+### Q4) When SOC teams are flooded with security alerts and incidents, this is called?
+> alert fatigue
+
+### Q5) In Microsoft Sentinel, automation is done via automated workflows, known as?
+> playbooks
+
+### Q6) The output of running Analytics rules includes security alerts and?
+> Incidents
+
+**Explaination :**
+
+Microsoft Sentinel works in four main phases: Collect, Detect, Investigate, and Respond.
+
+`1. Collect`
+
+Sentinel first collects logs and security data from different devices, applications, cloud services, and networks using Data Connectors. These logs are stored in Log Analytics Workspace, where analysts can search and analyze them using KQL (Kusto Query Language).
+
+`2. Detect`
+
+After collecting logs, Sentinel analyzes them to detect suspicious activities.
+- Workbooks help visualize logs and security data through dashboards.
+- Analytics Rules analyze logs and generate alerts when suspicious behavior is detected.
+- Threat Hunting allows analysts to proactively search for hidden threats using hunting queries.
+
+`3. Investigate`
+
+When an alert is triggered, Sentinel creates an Incident for analysts to investigate.
+Analysts can:
+- Review alert details
+- Analyze timelines
+- Map related entities like users, IPs, and devices
+- Add comments and assign incidents to other analysts
+
+`4. Respond`
+
+Sentinel uses Playbooks to automate security responses and reduce alert fatigue.
+Playbooks can:
+- Block malicious IPs
+- Disable compromised accounts
+- Send notifications
+- Create tickets
+- Perform automated remediation actions
+
+These four phases help SOC analysts continuously monitor, detect, investigate, and respond to cyber threats efficiently.
+
+---
+
+# TASK 4 :  When To Use Microsoft Sentinel
+
+Q1) Organizations use Microsoft Sentinel mainly because they need to _______ their cloud infrastructure.
+> monitor
+
+Q2) With Microsoft Sentinel, there is no need for server provisioning. This means it is?
+> cloud-native
+
+**Explaination :**
+
+Microsoft Sentinel is a cloud-native SIEM and SOAR solution that helps organizations collect logs, detect threats, investigate incidents, and automate security responses across cloud and on-premises environments.
+
+***Features :***
+- Centralized security monitoring
+- Real-time threat detection
+- Automated response using playbooks
+- Easy integration with Azure and other data sources
+
+---
+# Task 5: Conclusion 
+
+### Q1 I understand how Microsoft Sentinel works!
+> No answer needed
