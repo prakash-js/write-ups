@@ -10,3 +10,15 @@
 > triage
 
 **Explaination :**
+
+`Security Operations Center`
+- A Security Operations Center (SOC) is a security team or department that protects an organization from cyber threats and attacks.
+- A SOC Analyst is a person in the SOC team whose role is to monitor systems, detect threats, analyze alerts, and respond to security incidents.
+
+A Microsoft Security Analyst is still a SOC Analyst, but they specifically work with Microsoft security technologies and environments.
+
+Examples:
+
+* Microsoft Sentinel
+* Microsoft Defender
+* Microsoft Entra ID
