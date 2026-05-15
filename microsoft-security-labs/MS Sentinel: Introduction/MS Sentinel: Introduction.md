@@ -1,4 +1,4 @@
-MS Sentinel: Introduction
+# MS Sentinel: Introduction
 ---
 
 # Task 1 : Microsoft Security Operations Analyst
