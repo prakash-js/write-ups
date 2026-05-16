@@ -47,3 +47,30 @@ To find the number of threads, I used the ~ command in the WinDbg command box. T
 
 ## Task 4
 
+- A named pipe is an IPC (Inter-Process Communication) channel used by processes to communicate with each other on the same system or across a network.
+
+- To identify the named pipe used by the suspicious process, I first inspected the process handles in WinDbg using the command
+<br>`!handle 0 f`
+
+- This command displays detailed information about handles opened by the process, including files, events, registry keys, and possible IPC-related objects. I then used the search feature (Ctrl + S) to search for the keyword Pipe because named pipes are commonly associated with IPC communication in malware activity.
+
+- During the review, I identified the handle
+<br>`Handle 000000000000028c`
+
+- I attempted to gather more metadata about the handle using
+<br>`!handle 28c f`
+
+- However, the above command did not reveal the expected named pipe information or object path. To continue the investigation, I tied to search the entire dump memory for the string pipe using
+<br>`s -a 0 L?800000 "pipe"` 
+
+This command searches the process memory for ASCII strings containing the keyword pipe.The value 0 was used to start the search from the beginning of the accessible process memory, and L?800000 defined the memory range to search. In this case, the 0x800000 value (approximately 8 MB) was manually selected to search a sufficiently large portion of the process memory for possible IPC-related strings without using an unnecessarily large search range.
+
+The search returned multiple results. I reviewed each memory address using the command:
+<br>`!address <output-address>`
+
+to identify whether the memory region was associated with the suspicious update.exe process. After identifying the relevant address, I used the following command to display the complete ASCII string stored at that memory location:
+<br> ```da 00000000`0044a9b4```
+
+This revealed the full named pipe string used by the malicious process.
+
+
