@@ -47,6 +47,10 @@ To find the number of threads, I used the ~ command in the WinDbg command box. T
 
 ## Task 4
 
+### Provide the named pipe (IPC channel) used by the malicious process.
+> MSSE-1641-server
+
+**Explaination :**
 - A named pipe is an IPC (Inter-Process Communication) channel used by processes to communicate with each other on the same system or across a network.
 
 - To identify the named pipe used by the suspicious process, I first inspected the process handles in WinDbg using the command
@@ -72,5 +76,6 @@ to identify whether the memory region was associated with the suspicious update.
 <br> ```da 00000000`0044a9b4```
 
 This revealed the full named pipe string used by the malicious process.
+
 
 
