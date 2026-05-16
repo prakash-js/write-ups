@@ -67,15 +67,15 @@ To find the number of threads, I used the ~ command in the WinDbg command box. T
 - However, the above command did not reveal the expected named pipe information or object path. To continue the investigation, I tied to search the entire dump memory for the string pipe using
 <br>`s -a 0 L?800000 "pipe"` 
 
-This command searches the process memory for ASCII strings containing the keyword pipe.The value 0 was used to start the search from the beginning of the accessible process memory, and L?800000 defined the memory range to search. In this case, the 0x800000 value (approximately 8 MB) was manually selected to search a sufficiently large portion of the process memory for possible IPC-related strings without using an unnecessarily large search range.
+- This command searches the process memory for ASCII strings containing the keyword pipe.The value 0 was used to start the search from the beginning of the accessible process memory, and L?800000 defined the memory range to search. In this case, the 0x800000 value (approximately 8 MB) was manually selected to search a sufficiently large portion of the process memory for possible IPC-related strings without using an unnecessarily large search range.
 
-The search returned multiple results. I reviewed each memory address using the command:
+- The search returned multiple results. I reviewed each memory address using the command:
 <br>`!address <output-address>`
 
-to identify whether the memory region was associated with the suspicious update.exe process. After identifying the relevant address, I used the following command to display the complete ASCII string stored at that memory location:
+- To identify whether the memory region was associated with the suspicious update.exe process. After identifying the relevant address, I used the following command to display the complete ASCII string stored at that memory location:
 <br> ```da 00000000`0044a9b4```
 
-This revealed the full named pipe string used by the malicious process.
+- This revealed the full named pipe string used by the malicious process.
 
 
 
