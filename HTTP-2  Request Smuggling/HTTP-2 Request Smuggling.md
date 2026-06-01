@@ -42,3 +42,91 @@ DATA Frame
 END_STREAM
 
 ```
+
+TASK 2
+
+## H2.CL Attack
+
+H2.CL stands for HTTP/2 / Content-Length.
+
+In an H2.CL attack, the frontend server accepts HTTP/2 requests and then downgrades them to HTTP/1.1 before forwarding them to the backend server.
+
+The problem occurs because the frontend and backend determine the end of a request differently:
+
+The frontend uses HTTP/2 frames to determine where the request ends.
+The backend uses the Content-Length header after the request is converted to HTTP/1.1.
+
+An attacker sends an HTTP/2 request and manually includes:
+
+Content-Length: 0
+
+Even though HTTP/2 does not rely on Content-Length for request framing, some proxies copy this header when converting the request to HTTP/1.1.
+
+As a result:
+
+* The frontend reads the complete HTTP/2 request using HTTP/2 framing.
+* The request is downgraded to HTTP/1.1.
+* The backend sees Content-Length: 0 and assumes the request body is empty.
+* Any remaining data is interpreted as a new HTTP/1.1 request.
+* This allows the attacker to smuggle a hidden request to the backend.
+
+## H2.TE Attack
+
+H2.TE Attack
+
+H2.TE stands for HTTP/2 / Transfer-Encoding.
+
+In an H2.TE attack, the frontend server accepts HTTP/2 requests and then downgrades them to HTTP/1.1 before forwarding them to the backend server.
+
+The problem occurs because the frontend and backend determine the end of a request differently:
+
+The frontend uses HTTP/2 frames to determine where the request ends.
+The backend uses the Transfer-Encoding: chunked header after the request is converted to HTTP/1.1.
+
+An attacker sends an HTTP/2 request and manually includes:
+
+Transfer-Encoding: chunked
+
+Even though Transfer-Encoding has no meaning in HTTP/2, some proxies incorrectly copy this header when converting the request to HTTP/1.1.
+
+The attacker then sends a chunked body that contains a:
+
+0
+
+chunk terminator, followed by additional data.
+
+In chunked encoding, a chunk size of 0 indicates the end of the request body.
+
+As a result:
+
+* The frontend reads the complete HTTP/2 request using HTTP/2 framing.
+* The request is downgraded to HTTP/1.1.
+* The backend sees Transfer-Encoding: chunked.
+* When the backend encounters the 0 chunk, it assumes the request has ended.
+* Any remaining data is interpreted as a new HTTP request.
+* This allows an attacker to smuggle a hidden request to the backend.
+
+Q1 Repeat the request shown in the practical example against the app and wait for a user to fall for our trap. What is the username of the victim user who liked our post?
+> THM{my_name_is_a_flag}
+
+**Explaination :**
+To exploit the vulnerability, I sent the following HTTP/2 request:
+```
+POST /post/12315198742342 HTTP/2
+Host: 10.48.182.31:8000
+Cookie: sessid=ba89f897ef7f68752abc
+Content-Type: application/x-www-form-urlencoded
+Content-Length: 0
+
+GET /post/like/12315198742342 HTTP/1.1
+foo: bar
+```
+The frontend server accepted the request as HTTP/2, but due to the request smuggling vulnerability, the embedded HTTP/1.1 request was forwarded to the backend as a separate request.
+
+The smuggled request: GET /post/like/12315198742342 HTTP/1.1
+
+was left in the backend connection queue. When another user later reused the same backend connection, the queued request was processed using the victim's session.
+
+As a result, the victim user unknowingly liked the post.
+
+
