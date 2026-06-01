@@ -43,7 +43,7 @@ END_STREAM
 
 ```
 
-TASK 2
+## TASK 2
 
 ## H2.CL Attack
 
@@ -106,7 +106,7 @@ As a result:
 * Any remaining data is interpreted as a new HTTP request.
 * This allows an attacker to smuggle a hidden request to the backend.
 
-Q1 Repeat the request shown in the practical example against the app and wait for a user to fall for our trap. What is the username of the victim user who liked our post?
+### Q1 Repeat the request shown in the practical example against the app and wait for a user to fall for our trap. What is the username of the victim user who liked our post?
 > THM{my_name_is_a_flag}
 
 **Explaination :**
