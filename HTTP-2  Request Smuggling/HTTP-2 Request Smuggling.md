@@ -163,3 +163,25 @@ Content-Type: application/x-www-form-urlencoded\r\n
 \r\n
 q=Search
 ```
+# Task 4
+
+# Q1 What is the value of the flag in /admin?
+> THM{staff_only}
+
+**Explanation :**
+
+Using the same CRLF injection technique as before, I injected a complete second request inside the foo header value. The frontend saw only one valid request to /hello and forwarded it without any ACL violation. When the backend downgraded and parsed the injected \r\n\r\n, it split the request in two — with the second one pointing directly to /admin.
+
+Since the smuggled GET /admin request was intentionally left unfinished, I sent the request twice. The first send processed the /hello request. The second send triggered the smuggled /admin request and returned its response.
+
+This is the core idea of request tunnelling  using an allowed resource to carry a forbidden one past the proxy.
+
+Payload
+```
+foo: bar\r\n
+Host: 10.48.135.151:8100\r\n
+\r\n
+GET /admin HTTP/1.1\r\n
+Host: 10.48.135.151:8100\r\n
+Content-Length: 100\r\n
+```
