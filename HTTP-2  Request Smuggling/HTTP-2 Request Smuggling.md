@@ -1,6 +1,6 @@
 # HTTP/2 Request Smuggling
 
-## Task 2 
+## Task 2
 
 ### Q1 Which version of the HTTP protocol uses \r\n to separate headers in a request?
 > HTTP/1.1
@@ -43,7 +43,7 @@ END_STREAM
 
 ```
 
-## TASK 2
+## TASK 3
 
 ## H2.CL Attack
 
@@ -106,6 +106,8 @@ As a result:
 * Any remaining data is interpreted as a new HTTP request.
 * This allows an attacker to smuggle a hidden request to the backend.
 
+## Task 4
+
 ### Q1 Repeat the request shown in the practical example against the app and wait for a user to fall for our trap. What is the username of the victim user who liked our post?
 > THM{my_name_is_a_flag}
 
@@ -129,7 +131,7 @@ was left in the backend connection queue. When another user later reused the sam
 
 As a result, the victim user unknowingly liked the post.
 
-## Task 3
+## Task 5
 
 ### H2 CRLF Injection — Header Leaking Attack
 This attack is specifically called H2 CRLF Injection to Leak Internal Headers. It is a variant of HTTP Request Smuggling where the goal is not to attack another user, but to reveal hidden internal headers that the frontend proxy secretly adds to every request before forwarding it to the backend.
@@ -163,7 +165,7 @@ Content-Type: application/x-www-form-urlencoded\r\n
 \r\n
 q=Search
 ```
-# Task 4
+## Task 6
 
 # Q1 What is the value of the flag in /admin?
 > THM{staff_only}
