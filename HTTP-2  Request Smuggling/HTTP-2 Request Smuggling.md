@@ -129,4 +129,37 @@ was left in the backend connection queue. When another user later reused the sam
 
 As a result, the victim user unknowingly liked the post.
 
+## Task 3
 
+### H2 CRLF Injection — Header Leaking Attack
+This attack is specifically called H2 CRLF Injection to Leak Internal Headers. It is a variant of HTTP Request Smuggling where the goal is not to attack another user, but to reveal hidden internal headers that the frontend proxy secretly adds to every request before forwarding it to the backend.
+
+The frontend proxy was silently injecting internal headers like x-thm-flag and Host into every request before passing it to the backend. These headers are invisible to the attacker from the outside. To smuggle a successful request later, or simply to find sensitive information, we first needed to know what those hidden headers looked like.
+
+# Q1 What's the value of the leaked internal header?
+> THM{not_secret_anymore}
+
+**Expalaination :**</br>
+From the lab instructions, it was mentioned that the frontend proxy preserves the Content-Length header when downgrading from HTTP/2 to HTTP/1.1. This told me that the backend relies on Content-Length to determine where a request ends, not Transfer-Encoding.
+
+Knowing this, I added a custom foo header to my HTTP/2 request and injected a new complete HTTP/1.1 request inside its value using CRLF characters via Burp.
+When the frontend downgraded to HTTP/1.1, the injected \r\n\r\n split the request. The Content-Length: 0 I injected made the backend treat request 1 as having no body.
+
+Since the backend was trusting Content-Length, it then read everything that came after as a brand new request — which was exactly my smuggled POST /hello with Content-Length: 300 and body q=.
+
+The backend obeyed that Content-Length: 300, greedily consumed the next 300 bytes from the pipeline — which happened to be the internal proxy headers — and reflected them back in the response, leaking the x-thm-flag.
+
+
+```
+Payload
+--------------------------------
+foo: bar\r\n
+Host: 10.48.135.151:8100\r\n
+\r\n
+POST /hello HTTP/1.1\r\n
+Host: 10.48.159.191:8100\r\n
+Content-Length: 400\r\n
+Content-Type: application/x-www-form-urlencoded\r\n
+\r\n
+q=Search
+```
