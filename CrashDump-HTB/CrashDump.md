@@ -92,3 +92,20 @@ To find the number of threads, I used the ~ command in the WinDbg command box. T
 
 - This single foreign thread handle confirmed that update.exe had an open handle to a thread in process 920, which is a clear indicator of process injection. So I converted 0x920 from hex to decimal and the answer is 2336.
 
+## Task 6
+
+###  At what time was the last thread created for the injected process? Provide the timestamp in UTC.
+> 2025-11-05 01:09:12
+
+**Explaination :**
+- To find the last thread created for the injected process, I opened the notepad.exe dump file (PID 920) in WinDbg. 
+
+- Then I ran !runaway 7 which showed three types of time for each thread — User Mode Time, Kernel Mode Time, and Elapsed Time.I focused on the Elapsed Time because it tells us how long each thread has been running since it was created. The thread that has been running for the shortest time means it was created last.From the output, Thread 3:2d0 had the smallest elapsed time of 0:05:24.068 compared to all other threads — which means it was created last among all the threads in the injected process.
+
+- I then switched context to that thread using ~3 s — where 3 is the thread index and s is used to select that thread as the current active thread in WinDbg. After selecting it, I ran .ttime which stands for Thread Time and displays the timing information of the currently selected thread, including its exact creation timestamp stored inside the dump file.
+
+- The output showed: `Wed Nov 5 06:39:12.931 2025`
+
+- After converting from UTC+5:30 to UTC `2025-11-05 01:09:12 UTC`
+
+- If the answer from the elapsed time is not clear or not expected, we can manually verify it by switching to each thread one by one using ~0 s, ~1 s, ~2 s, ~3 s and running .ttime on each one. Then we can compare the Created timestamps across all threads — the thread with the latest creation timestamp is the last created thread. This manual approach cross validates our finding from the elapsed time.
