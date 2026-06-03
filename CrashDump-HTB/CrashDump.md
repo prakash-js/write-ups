@@ -78,4 +78,17 @@ To find the number of threads, I used the ~ command in the WinDbg command box. T
 - This revealed the full named pipe string used by the malicious process.
 
 
+## Task 5
+
+### Provide the PID of the injected process. Provide the Answer in decimal.
+> 2336
+
+**Explaination :**
+- In this task I want to find which process update.exe is injected into.
+
+- For that I used the command `!handle 0 f Thread`  which helps to get detailed information about the thread handles.
+
+-Looking at the output, every thread handle was associated with Process ID c24 (which is update.exe) except one, which was associated with Process ID 920. 
+
+- This single foreign thread handle confirmed that update.exe had an open handle to a thread in process 920, which is a clear indicator of process injection. So I converted 0x920 from hex to decimal and the answer is 2336.
 
