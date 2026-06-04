@@ -19,6 +19,7 @@ Challenge room to investigate a compromised host.
 
 
 ### Q2 Imposter Alert: There seems to be an imposter account observed in the logs, what is the name of that user?
+>  Amel1a
 
 **Explaination :**
 - To identify the suspected imposter account, I first listed all usernames and their occurrence counts using the following Splunk query:
@@ -34,7 +35,9 @@ index="*"
 - This technique is known as typosquatting (or impersonation through look-alike characters), where an attacker creates an account name that     closely resembles a legitimate user's account in an attempt to deceive users or evade detection.
 
 ### Q3 Which user from the HR department was observed to be running scheduled tasks?
->
+> Chris.fort
+
+**Explaination :**
 
 - I first searched for all schtasks activity:
 ```
@@ -59,3 +62,20 @@ index=win_eventlogs (*schtasks* AND *ONSTART*)
 This revealed the command: `schtasks /create /tn OfficUpdater /tr "C:\Users\Chris.fort\AppData\Local\Temp\update.exe" /sc onstart`
 
 - The associated user was Chris.fort, indicating that Chris.fort was the HR user observed using scheduled tasks.
+
+### Q4 Which user from the HR department executed a system process (LOLBIN) to download a payload from a file-sharing host. 
+> Haroon
+
+**Explaination :**
+- The question explicitly mentions a LOLBIN (Living Off The Land Binary), which refers to a legitimate Windows binary that can be abused to perform malicious actions. Common LOLBINs used for downloading payloads include `certutil.exe`, `powershell.exe` (`Invoke-WebRequest`), and `curl.exe`.
+
+- To identify the user who downloaded a payload using a LOLBIN, I searched for common download-related LOLBIN commands:
+
+```spl
+index="*"
+("Invoke-WebRequest" OR "certutil" OR "curl")
+| table CommandLine, UserName
+```
+
+- The search results revealed that **haroon** executed `certutil.exe` to download the file **e4d11035_benign.exe** from **controlc.com**, indicating that haroon was the HR user who used a LOLBIN to download a payload from a file-sharing host.
+
