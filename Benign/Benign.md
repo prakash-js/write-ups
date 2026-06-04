@@ -77,5 +77,51 @@ index="*"
 | table CommandLine, UserName
 ```
 
-- The search results revealed that **haroon** executed `certutil.exe` to download the file **e4d11035_benign.exe** from **controlc.com**, indicating that haroon was the HR user who used a LOLBIN to download a payload from a file-sharing host.
+- The search results revealed that **haroon** executed `certutil.exe` to download the file **e4d11035** and saved as benign.exe** from **controlc.com**, indicating that haroon was the HR user who used a LOLBIN to download a payload from a file-sharing host.
 
+
+### Q5 To bypass the security controls, which system process (lolbin) was used to download a payload from the internet? 
+> certutil.exe
+
+**Explaination :**
+- As identified in the previous question, the payload was downloaded using certutil.exe, indicating that certutil was the LOLBIN used to bypass security controls and retrieve the file from the internet.
+
+### Q6 What was the date that this binary was executed by the infected host? format (YYYY-MM-DD)
+> 2022-03-04
+
+**Explaination :**
+
+- To identify the date on which the binary was executed by the infected host, I searched for the certutil.exe command that was used to download the payload from the external host and reviewed the timestamp of the associated event:
+```
+index="*"
+("Invoke-WebRequest" OR "certutil")
+CommandLine="*certutil.exe -urlcache -f*https://controlc.com/e4d11035*benign.exe*"
+```
+- From the resulting event, I extracted the timestamp and converted it to the required YYYY-MM-DD format to determine the execution date.
+
+### Q7 Which third-party site was accessed to download the malicious payload?
+> controlc.com
+
+**Explaination :**
+
+- As identified in Question 4, the payload was downloaded using certutil.exe from controlc.com, making controlc.com the third-party site used to host and deliver the malicious payload.
+
+### Q8 What is the name of the file that was saved on the host machine from the C2 server during the post-exploitation phase?
+>  benign.exe
+
+**Explaination :**
+ 
+ - As identified in Question 4, the payload was downloaded from controlc.com using certutil.exe, and the downloaded file was saved on the host machine as benign.exe.
+
+ ### Q9 The suspicious file downloaded from the C2 server contained malicious content with the pattern THM{..........}; what is that pattern?
+> THM{KJ&*H^B0}
+
+**Explaination :**
+To identify the flag, I browsed to the infected URL identified in the previous investigation: `https://controlc.com/e4d11035` The content hosted on the page contained a flag in
+
+### Q10 What is the URL that the infected host connected to?
+> https://controlc.com/e4d11035
+
+**Explaination :**
+
+Therefore, the URL contacted by the infected host was `https://controlc.com/e4d11035`
