@@ -17,6 +17,7 @@ Challenge room to investigate a compromised host.
 
 - From the search results, Splunk displayed a total event count of 13,959 events, indicating the number of logs ingested for the selected time range.
 
+----
 
 ### Q2 Imposter Alert: There seems to be an imposter account observed in the logs, what is the name of that user?
 >  Amel1a
@@ -33,6 +34,8 @@ index="*"
     - Amel1a
 
 - This technique is known as typosquatting (or impersonation through look-alike characters), where an attacker creates an account name that     closely resembles a legitimate user's account in an attempt to deceive users or evade detection.
+
+---
 
 ### Q3 Which user from the HR department was observed to be running scheduled tasks?
 > Chris.fort
@@ -63,6 +66,8 @@ This revealed the command: `schtasks /create /tn OfficUpdater /tr "C:\Users\Chri
 
 - The associated user was Chris.fort, indicating that Chris.fort was the HR user observed using scheduled tasks.
 
+---
+
 ### Q4 Which user from the HR department executed a system process (LOLBIN) to download a payload from a file-sharing host. 
 > Haroon
 
@@ -79,12 +84,15 @@ index="*"
 
 - The search results revealed that **haroon** executed `certutil.exe` to download the file **e4d11035** and saved as benign.exe** from **controlc.com**, indicating that haroon was the HR user who used a LOLBIN to download a payload from a file-sharing host.
 
+---
 
 ### Q5 To bypass the security controls, which system process (lolbin) was used to download a payload from the internet? 
 > certutil.exe
 
 **Explaination :**
 - As identified in the previous question, the payload was downloaded using certutil.exe, indicating that certutil was the LOLBIN used to bypass security controls and retrieve the file from the internet.
+
+---
 
 ### Q6 What was the date that this binary was executed by the infected host? format (YYYY-MM-DD)
 > 2022-03-04
@@ -99,12 +107,16 @@ CommandLine="*certutil.exe -urlcache -f*https://controlc.com/e4d11035*benign.exe
 ```
 - From the resulting event, I extracted the timestamp and converted it to the required YYYY-MM-DD format to determine the execution date.
 
+---
+
 ### Q7 Which third-party site was accessed to download the malicious payload?
 > controlc.com
 
 **Explaination :**
 
 - As identified in Question 4, the payload was downloaded using certutil.exe from controlc.com, making controlc.com the third-party site used to host and deliver the malicious payload.
+
+---
 
 ### Q8 What is the name of the file that was saved on the host machine from the C2 server during the post-exploitation phase?
 >  benign.exe
@@ -113,12 +125,15 @@ CommandLine="*certutil.exe -urlcache -f*https://controlc.com/e4d11035*benign.exe
  
  - As identified in Question 4, the payload was downloaded from controlc.com using certutil.exe, and the downloaded file was saved on the host machine as benign.exe.
 
+---
+
  ### Q9 The suspicious file downloaded from the C2 server contained malicious content with the pattern THM{..........}; what is that pattern?
 > THM{KJ&*H^B0}
 
 **Explaination :**
 To identify the flag, I browsed to the infected URL identified in the previous investigation: `https://controlc.com/e4d11035` The content hosted on the page contained a flag in
 
+---
 ### Q10 What is the URL that the infected host connected to?
 > https://controlc.com/e4d11035
 
