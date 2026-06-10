@@ -60,3 +60,33 @@ A Denial of Service attack is an attempt to make a system, application, or netwo
 
 ### Q2 What type of incident aims to disrupt the availability of an application?
 > Denial of service 
+
+# Incident Response Process 
+
+**Incident Response ** Frameworks provide a structured and systematic approach for handling cybersecurity incidents. Since incidents can vary in type and impact, organizations use these frameworks to ensure incidents are identified, contained, eradicated, and recovered from efficiently. Two of the most widely recognized incident response frameworks are the SANS and the National Institute of Standards and Technology (NIST) frameworks.
+
+SANS and NIST follow the same overall incident response lifecycle: prepare for incidents, detect and analyze them, contain the threat, remove the root cause, recover systems, and document lessons learned. The main difference is that SANS breaks the process into six detailed phases, while NIST groups some phases together into four broader stages.
+
+<img width="820" height="520" alt="image" src="https://github.com/user-attachments/assets/22ac6195-7a21-4a18-99fb-76fbee4b982a" />
+
+Comparison of SANS and NIST Incident Response Frameworks (Source: TryHackMe)
+
+
+1) Preparation – Preparation means taking preventive measures before incidents occur.
+
+2) Identification – Detecting, analyzing, and confirming whether suspicious activity is a security incident.
+
+3) Containment – If an incident is confirmed, affected systems or user accounts are isolated to prevent further spread and minimize damage.
+
+4) Eradication – Malicious access and persistence mechanisms are removed.
+
+5) Recovery – The process of restoring affected systems and monitoring them to ensure normal operations resume safely.
+
+6) Lessons Learned – The team documents what happened and improves defenses.
+
+
+### Q1 The Security team disables a machine's internet connection after an incident. Which phase of the SANS IR lifecycle is followed here?
+> containment
+
+### Q2 Which phase of NIST corresponds with the lessons learned phase of the SANS IR lifecycle?
+> Post Incident Activity
