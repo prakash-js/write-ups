@@ -46,10 +46,10 @@ A malware infection occurs when malicious software is installed on a system with
 **Security Breach :** </br>
 A security breach occurs when an unauthorized individual gains access to sensitive systems, networks, or data. The primary concern in a security breach is the loss of confidentiality. Security breaches can result in data theft, financial loss, legal consequences, and reputational damage to an organization.
 
-**Data Leak : **</br>
+**Data Leak :** </br>
 A data leak is the exposure of sensitive or confidential information to unauthorized parties. Unlike some security breaches, data leaks can occur accidentally due to misconfigurations, human errors, or improper access controls. Examples include publicly exposed databases, accidentally shared documents, or leaked customer records.
 
-**Insider Attack :**</br>
+**Insider Attack :** </br>
 An insider attack occurs when someone within the organization, such as an employee, contractor, or partner, intentionally misuses their authorized access to harm the organization. Because insiders already possess legitimate access to systems and data, these attacks can be difficult to detect and may cause significant damage.
 
 **Denial of Service (DoS) Attack :**</br>
