@@ -115,3 +115,38 @@ A playbook is a high-level set of procedures and guidelines for responding to a 
 
 ### Q1 Step-by-step comprehensive guidelines for incident response are known as?
 > Playbooks
+
+### Task 6 
+
+### Q1 What was the name of the malicious email sender? 
+> Jeff Johnson
+
+**Explaination :**
+
+<img width="530" height="372" alt="image" src="https://github.com/user-attachments/assets/67631ecb-5abb-4a03-a06e-411c39bfe581" />
+
+
+Since the email contains an attachment and appears suspicious, I suspect it is a phishing email. The email sender is Jeff Johnson.
+
+### Q2 What was the threat vector?
+> Email Attachment
+
+**Explaination :** The attack vector is the method used by the attacker to deliver the malware. In this case, the attack vector was an email attachment.
+
+### Q3 How many devices downloaded the email attachment?
+> 3
+
+**Explaination :** After downloading the attachment, the "Take Action" button became available. By clicking it and reviewing the detailed information, I observed that the attachment had been downloaded by 3 devices.
+<img width="681" height="311" alt="image" src="https://github.com/user-attachments/assets/88fdb403-eebc-494c-9ce6-4dbfccc6c6ae" />
+
+
+### Q4 How many devices executed the file?
+> 1
+
+**Explaination :** From the table, under the "State" column, we can see that only 1 device executed the file, while the other 2 devices downloaded the file but did not execute it.
+
+### Q5 What is the flag found at the end of the exercise? 
+> THM{My_First_Incident_Response}
+
+**Explaination :** By quarantining the file on the affected devices and starting the investigation using the "Investigate" option, we can review the incident details. From there, by clicking "Take Action," we can complete the incident response process and obtain the final flag.
+
