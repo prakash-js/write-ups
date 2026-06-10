@@ -61,7 +61,7 @@ A Denial of Service attack is an attempt to make a system, application, or netwo
 ### Q2 What type of incident aims to disrupt the availability of an application?
 > Denial of service 
 
-# Incident Response Process 
+# Task 4 Incident Response Process 
 
 **Incident Response ** Frameworks provide a structured and systematic approach for handling cybersecurity incidents. Since incidents can vary in type and impact, organizations use these frameworks to ensure incidents are identified, contained, eradicated, and recovered from efficiently. Two of the most widely recognized incident response frameworks are the SANS and the National Institute of Standards and Technology (NIST) frameworks.
 
@@ -90,3 +90,28 @@ Comparison of SANS and NIST Incident Response Frameworks (Source: TryHackMe)
 
 ### Q2 Which phase of NIST corresponds with the lessons learned phase of the SANS IR lifecycle?
 > Post Incident Activity
+
+
+# Task 5 Incident Response Technique
+
+**SIEM (Security Information and Event Management)**
+A SIEM collects and centralizes logs from multiple sources, correlates events, and generates alerts for suspicious activities.
+
+**EDR (Endpoint Detection and Response)**
+EDR continuously monitors endpoint activity, detects advanced threats, and can automatically contain or remediate compromised systems.
+
+**Antivirus (AV)**
+An Antivirus detects, blocks, and removes known malware from systems using signatures and scanning techniques.
+
+**Playbook**
+A playbook is a high-level set of procedures and guidelines for responding to a specific type of security incident.
+
+**Example: Phishing Email Playbook**
+* Analyze email
+* Check attachments
+* Identify affected users
+* Isolate infected systems
+* Block sender
+
+### Q1 Step-by-step comprehensive guidelines for incident response are known as?
+> Playbooks
