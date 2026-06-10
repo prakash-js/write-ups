@@ -35,3 +35,28 @@ A false positive occurs when a security tool generates an alert for activity tha
 
 ### Q3 If a fire alarm is triggered by smoke after cooking, is it a true positive or a false positive?
 > false positive
+
+# Task 3 Types of Incidents
+
+Security incidents can occur in many forms, and not every incident is the same. Different incidents affect different aspects of an organization's security, such as confidentiality, integrity, and availability. Understanding the various types of incidents helps security teams identify threats, assess their impact, and respond effectively.
+
+**Malware Infection :**</br>
+A malware infection occurs when malicious software is installed on a system without authorization. Malware can steal data, damage files, provide unauthorized access to attackers, or disrupt normal operations. Common types include viruses, worms, trojans, ransomware, and spyware. Malware infections often originate from phishing emails, malicious downloads, or exploited vulnerabilities.
+
+**Security Breach :** </br>
+A security breach occurs when an unauthorized individual gains access to sensitive systems, networks, or data. The primary concern in a security breach is the loss of confidentiality. Security breaches can result in data theft, financial loss, legal consequences, and reputational damage to an organization.
+
+**Data Leak : **</br>
+A data leak is the exposure of sensitive or confidential information to unauthorized parties. Unlike some security breaches, data leaks can occur accidentally due to misconfigurations, human errors, or improper access controls. Examples include publicly exposed databases, accidentally shared documents, or leaked customer records.
+
+**Insider Attack :**</br>
+An insider attack occurs when someone within the organization, such as an employee, contractor, or partner, intentionally misuses their authorized access to harm the organization. Because insiders already possess legitimate access to systems and data, these attacks can be difficult to detect and may cause significant damage.
+
+**Denial of Service (DoS) Attack :**</br>
+A Denial of Service attack is an attempt to make a system, application, or network unavailable to legitimate users by overwhelming it with excessive traffic or requests. The goal is to exhaust system resources and disrupt business operations. When multiple systems are used to launch the attack, it is known as a Distributed Denial of Service (DDoS) attack.
+
+### Q1 A user's system got compromised after downloading a file attachment from an email. What type of incident is this?
+> malware infection
+
+### Q2 What type of incident aims to disrupt the availability of an application?
+> Denial of service 
