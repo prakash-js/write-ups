@@ -109,3 +109,21 @@ To find the number of threads, I used the ~ command in the WinDbg command box. T
 - After converting from UTC+5:30 to UTC `2025-11-05 01:09:12 UTC`
 
 - If the answer from the elapsed time is not clear or not expected, we can manually verify it by switching to each thread one by one using ~0 s, ~1 s, ~2 s, ~3 s and running .ttime on each one. Then we can compare the Created timestamps across all threads — the thread with the latest creation timestamp is the last created thread. This manual approach cross validates our finding from the elapsed time.
+
+## Task 7
+
+### Provide the BaseAddress of the injected shellcode.
+> b1`20870000
+
+**Explaination :**
+
+Since we already identified in Task 5 that the injected process was notepad.exe (PID 920), I opened its dump file in WinDbg to inspect its memory layout.
+I then ran `!address` to view all memory regions that notepad.exe was using at the time the dump was captured.
+
+MEM_PRIVATE combined with PAGE_EXECUTE_READWRITE permissions is highly suspicious and commonly associated with malicious activity such as shellcode injection.
+
+Private memory is allocated specifically for one process at runtime and is not backed by any file on disk. When this is combined with Read, Write, and Execute permissions, it becomes a strong indicator of compromise attackers abuse this combination to write malicious payload bytes into memory and then execute them directly.
+
+ To filter for these specific conditions, I ran:
+ `!address -f:MEM_PRIVATE,PAGE_EXECUTE_READWRITE`
+
