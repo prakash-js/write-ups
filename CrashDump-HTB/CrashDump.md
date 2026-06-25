@@ -135,5 +135,6 @@ After applying the filter, 3 suspicious regions appeared. I eliminated ```b1`221
 > 101.10.25.4
 
 **Explaination :**
+
 To find the C2 server IP, I searched for the string http across the suspicious memory regions using ```s -a b1`20870000 L?8e00000000 "http"```. This returned multiple hits, and among them I noticed a non-localhost IP starting with "101.10.25". To retrieve the full IP address, I then searched specifically for that string using ```s -a b1`20870000 L?800000000 "101.10.25"```, which revealed the complete C2 server IP address.
 
