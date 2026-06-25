@@ -129,3 +129,11 @@ Private memory is allocated specifically for one process at runtime and is not b
  
 After applying the filter, 3 suspicious regions appeared. I eliminated ```b1`221a0000``` because its preview bytes started withMZ, which strongly indicates it is a PE executable — not raw shellcode. I also eliminated ```b1`23bd0000``` because its size was 0x400000(4MB), which is far too large for shellcode. That left ```b1`20870000``` with only 0x1000 (4KB) — the smallest region containing raw bytes with no PE structure, confirming it as the BaseAddress of the injected shellcode.
 
+## Task 8
+
+### Provide the C2 server IP address.
+> 101.10.25.4
+
+**Explaination :**
+To find the C2 server IP, I searched for the string http across the suspicious memory regions using ```s -a b1`20870000 L?8e00000000 "http"```. This returned multiple hits, and among them I noticed a non-localhost IP starting with http://101.10.25. To retrieve the full IP address, I then searched specifically for that string using ```s -a b1`20870000 L?800000000 "101.10.25"```, which revealed the complete C2 server IP address.
+
