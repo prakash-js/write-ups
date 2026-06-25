@@ -2,7 +2,7 @@
 
 ## Task 2
 
-### Q1 Which version of the HTTP protocol uses \r\n to separate headers in a request?
+### Q1 Which version of the HTTP protocol uses \r\n to separate headers in a request? 
 > HTTP/1.1
 
 **Explaination :** 
