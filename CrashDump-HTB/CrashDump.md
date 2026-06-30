@@ -138,3 +138,23 @@ After applying the filter, 3 suspicious regions appeared. I eliminated ```b1`221
 
 To find the C2 server IP, I searched for the string http across the suspicious memory regions using ```s -a b1`20870000 L?8e00000000 "http"```. This returned multiple hits, and among them I noticed a non-localhost IP starting with "101.10.25". To retrieve the full IP address, I then searched specifically for that string using ```s -a b1`20870000 L?800000000 "101.10.25"```, which revealed the complete C2 server IP address.
 
+## Task 9
+
+### Provide the name of the C2 framework used by the threat actor.
+> Cobalt Strike
+
+**Explaination :**
+
+To identify the C2 framework, I analyzed the overall behavior pattern observed throughout the investigation rather than relying on a single indicator.
+
+The malware demonstrated three key behaviors characteristic of Cobalt Strike:
+
+First, it injected itself into a legitimate running process (notepad.exe) and loaded a full executable directly into its memory without touching the disk.
+
+Second, it used a named pipe (MSSE-1641-server) for inter-process communication, which follows the default Cobalt Strike Beacon named pipe naming convention.
+
+Third, it established an outbound HTTP connection to the C2 server, consistent with Cobalt Strike's communication pattern. 
+
+Based on these combined behavioral indicators, the C2 framework used by the threat actor was confirmed to be Cobalt Strike.
+
+
