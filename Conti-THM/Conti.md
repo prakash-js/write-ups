@@ -63,4 +63,30 @@ index="*" Image="C:\\Users\\Administrator\\Documents\\cmd.exe"
 
 I then submitted the extracted hash to VirusTotal for reputation analysis. VirusTotal reported that **52 out of 61 security vendors** detected the file as malicious, confirming that the executable was ransomware.
 
+<img width="1117" height="172" alt="image" src="https://github.com/user-attachments/assets/d6db74ed-abea-4543-ba97-669ce4f42459" />
+
+
+</br>
 This analysis verified that the `cmd.exe` file located in the Administrator's **Documents** directory was a malicious binary rather than the legitimate Windows Command Prompt executable.
+
+### Q2 What is the Sysmon event ID for the related file creation event?
+> 11
+
+**Explaination: **
+
+Sysmon Event ID 11 records File Create events, logging whenever a process creates a new file on the system. During a ransomware attack, this event is particularly valuable because ransomware typically creates ransom notes and writes encrypted files to disk.
+
+By analyzing Event ID 11, I was able to identify the file creation activity associated with the ransomware and correlate it with the originating process, helping confirm the malicious executable involved in the attack.
+
+### Q3 Can you find the MD5 hash of the ransomware?
+> 290C7DFB01E50CEA9E19DA81A781AF2C
+
+**Explaination :**
+
+The MD5 hash was extracted from the Sysmon Hashes field for the suspicious executable identified in Question 1.
+
+index="*" Image="C:\\Users\\Administrator\\Documents\\cmd.exe"
+| where Hashes!=""
+| table Image, Hashes
+
+The extracted hash was then verified using VirusTotal, where 52 out of 61 security vendors identified the file as malicious, confirming that the executable was the Conti ransomware.
