@@ -85,8 +85,10 @@ By analyzing Event ID 11, I was able to identify the file creation activity asso
 
 The MD5 hash was extracted from the Sysmon Hashes field for the suspicious executable identified in Question 1.
 
+```
 index="*" Image="C:\\Users\\Administrator\\Documents\\cmd.exe"
 | where Hashes!=""
 | table Image, Hashes
+```
 
 The extracted hash was then verified using VirusTotal, where 52 out of 61 security vendors identified the file as malicious, confirming that the executable was the Conti ransomware.
