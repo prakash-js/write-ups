@@ -92,3 +92,34 @@ index="*" Image="C:\\Users\\Administrator\\Documents\\cmd.exe"
 ```
 
 The extracted hash was then verified using VirusTotal, where 52 out of 61 security vendors identified the file as malicious, confirming that the executable was the Conti ransomware.
+
+### Q4 What file was saved to multiple folder locations?
+> readme.txt
+
+**Explaination :**
+
+Since the lab focuses on post-incident investigation, I first identified when the ransomware executable started running. I searched for the process creation event associated with the previously identified malicious executable:
+```
+index="*" EventCode="1" Image="C:\\Users\\Administrator\\Documents\\cmd.exe"
+| sort _time
+```
+
+The earliest relevant process creation event occurred at: `08/09/2021 13:05:32.000`
+
+I used this timestamp as the starting point for the investigation and focused on Sysmon Event ID 11, which records file creation events. I also restricted the search to the affected Exchange server to reduce unrelated events.
+
+```
+index="*" host="WIN-A0QKG2AS2Q7" EventCode="11"
+| eval FileName=mvindex(split(TargetFilename,"\\"),-1)
+| stats count by FileName
+| sort - count
+````
+The TargetFilename field contains the full path of each created file. The split() function separates the path at each backslash (\), and mvindex(...,-1) selects the final value, leaving only the filename.
+
+I then used stats count by FileName to count how many times each filename appeared and sorted the results in descending order. The results showed that readme.txt was created 18 times, while the other files appeared only once.
+
+This identified readme.txt as the file saved across multiple folder locations, consistent with ransomware behavior of distributing ransom notes throughout affected directories.
+
+<img width="1568" height="427" alt="image" src="https://github.com/user-attachments/assets/20524c27-62df-4aaf-805e-628a1d831919" />
+
+### Q5 What was the command the attacker used to add a new user to the compromised system?
