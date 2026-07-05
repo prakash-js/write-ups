@@ -22,8 +22,9 @@ Task 2
 ### 1) Can you identify the location of the ransomware?
 > C:\Users\Administrator\Documents\cmd.exe
 
-**Explaination: **
-## Identifying the Ransomware Executable
+**Explaination:**
+
+Identifying the Ransomware Executable
 
 To identify the ransomware executable, I used a correlation-based SPL query. Instead of reviewing every process individually, I filtered for executables that performed three key activities commonly associated with ransomware.
 
@@ -51,7 +52,7 @@ Although the filename is **cmd.exe**, its location is highly suspicious. The leg
 
 Attackers commonly disguise malware by naming it after legitimate Windows binaries and placing it in user-writable directories to evade casual inspection.
 
-### Hash Verification
+Hash Verification
 
 To retrieve the file hash from Sysmon, I executed the following SPL query:
 
