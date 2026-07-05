@@ -23,7 +23,7 @@ Task 2
 > C:\Users\Administrator\Documents\cmd.exe
 
 **Explaination:**
-
+ 
 Identifying the Ransomware Executable
 
 To identify the ransomware executable, I used a correlation-based SPL query. Instead of reviewing every process individually, I filtered for executables that performed three key activities commonly associated with ransomware.
