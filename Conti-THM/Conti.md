@@ -124,3 +124,31 @@ This identified readme.txt as the file saved across multiple folder locations, c
 <img width="1568" height="427" alt="image" src="https://github.com/user-attachments/assets/20524c27-62df-4aaf-805e-628a1d831919" />
 
 ### Q5 What was the command the attacker used to add a new user to the compromised system?
+
+I initially suspected that the user-creation command would appear after cmd.exe execution, but the timeline did not support that assumption.
+
+I then analyzed Sysmon Event ID 3 network connections and filtered out loopback and self-connections. 
+
+```
+index=* host="WIN-AOQKG2AS2Q7" EventCode=3
+| where NOT Like(DestinationIp,"0:0:0:0:0:0:0:1") 
+| where NOT Like(DestinationIp,"10.10.10.6") 
+| where DestinationIp != "" 
+| table _time SourceIp SourcePort DestinationIp DestinationPort
+| sort time
+```
+This left communication with 10.10.10.4 and 10.10.10.2. I identified 10.10.10.4 as the DNS server based on repeated connections to DNS-related ports.
+
+I then narrowed the investigation window between the first suspicious external connection and the later cmd.exe activity
+```
+index="*" EventCode=1 host="WIN-AOQKG2AS2Q7"
+earliest="09/08/2021:12:51:55"
+latest="09/08/2021:13:05:32"
+| where NOT like(Image, "%Splunk%")
+| where NOT like(ParentImage, "%Splunk%")
+| where isnotnull(Image) AND Image!=""
+| table _time Image ParentImage ParentCommandLine CommandLine
+| sort _time
+```
+
+Searching Sysmon Event ID 1 process-creation logs within this period revealed the command `net user /add securityninja hardToHack123$` at `2021-09-08 13:04:10`.
