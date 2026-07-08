@@ -124,7 +124,9 @@ This identified readme.txt as the file saved across multiple folder locations, c
 <img width="1568" height="427" alt="image" src="https://github.com/user-attachments/assets/20524c27-62df-4aaf-805e-628a1d831919" />
 
 ### Q5 What was the command the attacker used to add a new user to the compromised system?
+> net user /add securityninja hardToHack123$
 
+**Explaination :**
 I initially suspected that the user-creation command would appear after cmd.exe execution, but the timeline did not support that assumption.
 
 I then analyzed Sysmon Event ID 3 network connections and filtered out loopback and self-connections. 
