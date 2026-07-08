@@ -154,3 +154,23 @@ latest="09/08/2021:13:05:32"
 ```
 
 Searching Sysmon Event ID 1 process-creation logs within this period revealed the command `net user /add securityninja hardToHack123$` at `2021-09-08 13:04:10`.
+
+
+### Q6 The attacker migrated the process for better persistence. What is the migrated process image (executable), and what is the original process image (executable) when the attacker got on the system?
+> C:\Windows\System32\WindowsPowerShell\v1.0\powershell.exe,C:\Windows\System32\wbem\unsecapp.exe
+
+**Explaination :**
+The question indicated that the attacker migrated the process after gaining access to the compromised system. Since process migration can involve creating a thread inside another process, I searched for Sysmon Event ID 8 (CreateRemoteThread) within the previously identified attack timeframe.
+```
+index="*" EventCode=8 host="WIN-AOQKG2AS2Q7"
+earliest="09/08/2021:12:51:55"
+latest="09/08/2021:13:05:32"
+| sort _time
+```
+
+The search returned two events. In the first event, I identified the following source and target process images:
+```
+SourceImage: C:\Windows\System32\WindowsPowerShell\v1.0\powershell.exe
+TargetImage: C:\Windows\System32\wbem\unsecapp.exe
+```
+The SourceImage shows the original process from which the remote thread was created, while the TargetImage identifies the process into which execution was migrated.
