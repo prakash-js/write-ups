@@ -197,7 +197,7 @@ latest="09/08/2021:13:05:32"
 | table _time Image ParentImage ParentCommandLine CommandLine
 | sort _time
 ```
-Among these events, one command stood out: 
+Among these events, one command at `2021-09-08 12:52:09` stood out: 
 ```
 attrib.exe -r \\win-aoqkg2as2q7.bellybear.local\C$\Program Files\Microsoft\Exchange Server\V15\FrontEnd\HttpProxy\owa\auth\i3gfPctK1c2x.aspx
 ```
@@ -218,9 +218,17 @@ Repeated POST requests to a randomly named ASPX file in the Exchange OWA path ar
 
 At this point, I had identified i3gfPctK1c2x.aspx as the deployed web shell and confirmed that it was being accessed through the web server.However, I had not yet determined how the file was initially deployed to the system.
 
-### Q8 What is the command line that executed this web shell?
+### Q9 What is the command line that executed this web shell?
 > attrib.exe  -r \\\\win-aoqkg2as2q7.bellybear.local\C$\Program Files\Microsoft\Exchange Server\V15\FrontEnd\HttpProxy\owa\auth\i3gfPctK1c2x.aspx
 
 **Explaination :**
 This command line was already identified during the Q8 process investigation, where cmd.exe was the parent process and attrib.exe referenced the web-shell file. The -r option removes the read-only attribute from the ASPX file, while the IIS logs identified in Q7 showed successful POST requests to /owa/auth/i3gfPctK1c2x.aspx with HTTP 200 responses. Therefore, the command line associated with the web shell was: `attrib.exe  -r \\\\win-aoqkg2as2q7.bellybear.local\C$\Program Files\Microsoft\Exchange Server\V15\FrontEnd\HttpProxy\owa\auth\i3gfPctK1c2x.aspx`
+
+Q10. What three CVEs did this exploit leverage? Provide the answer in ascending order.
+> CVE-2018-13374,CVE-2018-13379,CVE-2020-0796
+
+**Explaination :**
+According to the Task 1 description, the incident involved a compromised Exchange server. Based on this context, I researched Conti-related vulnerabilities affecting Exchange. My Splunk evidence, including the web shell in `\owa\auth\` and Autodiscover SSRF requests, pointed to the ProxyShell chain (`CVE-2021-31207`, `CVE-2021-34473`, `CVE-2021-34523`), but this was not the accepted answer.
+
+Thanks to this [InfosecWriteups write-up](https://infosecwriteups.com/conti-ransomware-threat-hunting-with-splunk-5dfe72635dbe), which helped me find the appropriate answer to this question: `CVE-2018-13374, CVE-2018-13379, CVE-2020-0796`
 
