@@ -241,7 +241,7 @@ This command line was already identified during the Q8 process investigation, wh
 
 ---
 
-Q10. What three CVEs did this exploit leverage? Provide the answer in ascending order.
+### Q10 What three CVEs did this exploit leverage? Provide the answer in ascending order.
 > CVE-2018-13374,CVE-2018-13379,CVE-2020-0796
 
 **Explaination :**
