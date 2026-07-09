@@ -70,6 +70,8 @@ I then submitted the extracted hash to VirusTotal for reputation analysis. Virus
 </br>
 This analysis verified that the `cmd.exe` file located in the Administrator's **Documents** directory was a malicious binary rather than the legitimate Windows Command Prompt executable.
 
+---
+
 ### Q2 What is the Sysmon event ID for the related file creation event?
 > 11
 
@@ -78,6 +80,8 @@ This analysis verified that the `cmd.exe` file located in the Administrator's **
 Sysmon Event ID 11 records File Create events, logging whenever a process creates a new file on the system. During a ransomware attack, this event is particularly valuable because ransomware typically creates ransom notes and writes encrypted files to disk.
 
 By analyzing Event ID 11, I was able to identify the file creation activity associated with the ransomware and correlate it with the originating process, helping confirm the malicious executable involved in the attack.
+
+---
 
 ### Q3 Can you find the MD5 hash of the ransomware?
 > 290C7DFB01E50CEA9E19DA81A781AF2C
@@ -93,6 +97,8 @@ index="*" Image="C:\\Users\\Administrator\\Documents\\cmd.exe"
 ```
 
 The extracted hash was then verified using VirusTotal, where 52 out of 61 security vendors identified the file as malicious, confirming that the executable was the Conti ransomware.
+
+---
 
 ### Q4 What file was saved to multiple folder locations?
 > readme.txt
@@ -122,6 +128,8 @@ I then used stats count by FileName to count how many times each filename appear
 This identified readme.txt as the file saved across multiple folder locations, consistent with ransomware behavior of distributing ransom notes throughout affected directories.
 
 <img width="1568" height="427" alt="image" src="https://github.com/user-attachments/assets/20524c27-62df-4aaf-805e-628a1d831919" />
+
+---
 
 ### Q5 What was the command the attacker used to add a new user to the compromised system?
 > net user /add securityninja hardToHack123$
@@ -155,6 +163,7 @@ latest="09/08/2021:13:05:32"
 
 Searching Sysmon Event ID 1 process-creation logs within this period revealed the command `net user /add securityninja hardToHack123$` at `2021-09-08 13:04:10`.
 
+---
 
 ### Q6 The attacker migrated the process for better persistence. What is the migrated process image (executable), and what is the original process image (executable) when the attacker got on the system?
 > C:\Windows\System32\WindowsPowerShell\v1.0\powershell.exe,C:\Windows\System32\wbem\unsecapp.exe
@@ -175,11 +184,15 @@ TargetImage: C:\Windows\System32\wbem\unsecapp.exe
 ```
 The SourceImage shows the original process from which the remote thread was created, while the TargetImage identifies the process into which execution was migrated.
 
+---
+
 ### Q7 The attacker also retrieved the system hashes. What is the process image used for getting the system hashes?
 > C:\Windows\System32\lsass.exe
 
 **Explaination :**
 The first event showed the attacker migrating from powershell.exe into unsecapp.exe. The second event showed the attacker-controlled unsecapp.exe targeting lsass.exe. Since lsass.exe contains credential material and was the process accessed during the hash-retrieval activity, the process image used for obtaining the system hashes was C:\Windows\System32\lsass.exe.
+
+---
 
 ### Q8 What is the web shell the exploit deployed to the system?
 > i3gfPctK1c2x.aspx
@@ -218,11 +231,15 @@ Repeated POST requests to a randomly named ASPX file in the Exchange OWA path ar
 
 At this point, I had identified i3gfPctK1c2x.aspx as the deployed web shell and confirmed that it was being accessed through the web server.However, I had not yet determined how the file was initially deployed to the system.
 
+---
+
 ### Q9 What is the command line that executed this web shell?
 > attrib.exe  -r \\\\win-aoqkg2as2q7.bellybear.local\C$\Program Files\Microsoft\Exchange Server\V15\FrontEnd\HttpProxy\owa\auth\i3gfPctK1c2x.aspx
 
 **Explaination :**
-This command line was already identified during the Q8 process investigation, where cmd.exe was the parent process and attrib.exe referenced the web-shell file. The -r option removes the read-only attribute from the ASPX file, while the IIS logs identified in Q7 showed successful POST requests to /owa/auth/i3gfPctK1c2x.aspx with HTTP 200 responses. Therefore, the command line associated with the web shell was: `attrib.exe  -r \\\\win-aoqkg2as2q7.bellybear.local\C$\Program Files\Microsoft\Exchange Server\V15\FrontEnd\HttpProxy\owa\auth\i3gfPctK1c2x.aspx`
+This command line was already identified during the Q8 process investigation, where cmd.exe was the parent process and attrib.exe referenced the web-shell file. The -r option removes the read-only attribute from the ASPX file, while the IIS logs identified in Q7 showed successful POST requests to /owa/auth/i3gfPctK1c2x.aspx with HTTP 200 responses. Therefore, the command line associated with the web shell was: `attrib.exe  -r \\\\win-aoqkg2as2q7.bellybear.local\C$\Program Files\Microsoft\Exchange Server\V15\FrontEnd\HttpProxy\owa\auth\i3gfPctK1c2x.aspx`.
+
+---
 
 Q10. What three CVEs did this exploit leverage? Provide the answer in ascending order.
 > CVE-2018-13374,CVE-2018-13379,CVE-2020-0796
