@@ -174,3 +174,53 @@ SourceImage: C:\Windows\System32\WindowsPowerShell\v1.0\powershell.exe
 TargetImage: C:\Windows\System32\wbem\unsecapp.exe
 ```
 The SourceImage shows the original process from which the remote thread was created, while the TargetImage identifies the process into which execution was migrated.
+
+### Q7 The attacker also retrieved the system hashes. What is the process image used for getting the system hashes?
+> C:\Windows\System32\lsass.exe
+
+**Explaination :**
+The first event showed the attacker migrating from powershell.exe into unsecapp.exe. The second event showed the attacker-controlled unsecapp.exe targeting lsass.exe. Since lsass.exe contains credential material and was the process accessed during the hash-retrieval activity, the process image used for obtaining the system hashes was C:\Windows\System32\lsass.exe.
+
+### Q8 What is the web shell the exploit deployed to the system?
+> i3gfPctK1c2x.aspx
+
+**Explaination :**
+While investigating Q5, I reviewed the same Sysmon Event ID 1 process-creation results:
+
+```
+index="*" EventCode=1 host="WIN-AOQKG2AS2Q7"
+earliest="09/08/2021:12:51:55"
+latest="09/08/2021:13:05:32"
+| where NOT like(Image, "%Splunk%")
+| where NOT like(ParentImage, "%Splunk%")
+| where isnotnull(Image) AND Image!=""
+| table _time Image ParentImage ParentCommandLine CommandLine
+| sort _time
+```
+Among these events, one command stood out: 
+```
+attrib.exe -r \\win-aoqkg2as2q7.bellybear.local\C$\Program Files\Microsoft\Exchange Server\V15\FrontEnd\HttpProxy\owa\auth\i3gfPctK1c2x.aspx
+```
+Two characteristics made the file suspicious:
+
+ - Location: The file was located under the Exchange OWA authentication path, \owa\auth\, where a newly introduced, randomly named ASPX file warranted further investigation.
+ - Filename: i3gfPctK1c2x.aspx had a random-looking name with no obvious functional meaning.
+
+I did not conclude that the file was malicious based on its name or location alone. To verify whether it was being accessed through the web server, I pivoted to the IIS logs and searched for requests referencing the file:
+```
+index=main sourcetype=iis cs_method=POST
+| search *i3gfPctK1c2x.aspx*
+| table _time c_ip cs_method cs_uri_query cs_uri_stem
+```
+The search returned four events, all showing POST requests from 10.10.10.2 to: `/owa/auth/i3gfPctK1c2x.aspx`
+
+Repeated POST requests to a randomly named ASPX file in the Exchange OWA path are consistent with active interaction with a web shell rather than the file merely existing unused on the server.
+
+At this point, I had identified i3gfPctK1c2x.aspx as the deployed web shell and confirmed that it was being accessed through the web server.However, I had not yet determined how the file was initially deployed to the system.
+
+### Q8 What is the command line that executed this web shell?
+> attrib.exe  -r \\\\win-aoqkg2as2q7.bellybear.local\C$\Program Files\Microsoft\Exchange Server\V15\FrontEnd\HttpProxy\owa\auth\i3gfPctK1c2x.aspx
+
+**Explaination :**
+This command line was already identified during the Q8 process investigation, where cmd.exe was the parent process and attrib.exe referenced the web-shell file. The -r option removes the read-only attribute from the ASPX file, while the IIS logs identified in Q7 showed successful POST requests to /owa/auth/i3gfPctK1c2x.aspx with HTTP 200 responses. Therefore, the command line associated with the web shell was: `attrib.exe  -r \\\\win-aoqkg2as2q7.bellybear.local\C$\Program Files\Microsoft\Exchange Server\V15\FrontEnd\HttpProxy\owa\auth\i3gfPctK1c2x.aspx`
+
