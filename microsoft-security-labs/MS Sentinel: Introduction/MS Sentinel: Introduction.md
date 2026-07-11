@@ -12,7 +12,7 @@
 ### Q3) Besides monitoring, what else do SOC Level 1 Analysts spend the majority of their time with?
 > triage
 
-**Explaination :**
+**Explanation :**
 
 `Security Operations Center`
 - A Security Operations Center (SOC) is a security team or department that protects an organization from cyber threats and attacks.
@@ -117,7 +117,7 @@ Sentinel uses Playbooks to automate response actions such as blocking IPs, disab
 ### Q6) The output of running Analytics rules includes security alerts and?
 > Incidents
 
-**Explaination :**
+**Explanation :**
 
 Microsoft Sentinel works in four main phases: Collect, Detect, Investigate, and Respond.
 
@@ -163,7 +163,7 @@ Q1) Organizations use Microsoft Sentinel mainly because they need to _______ the
 Q2) With Microsoft Sentinel, there is no need for server provisioning. This means it is?
 > cloud-native
 
-**Explaination :**
+**Explanation :**
 
 Microsoft Sentinel is a cloud-native SIEM and SOAR solution that helps organizations collect logs, detect threats, investigate incidents, and automate security responses across cloud and on-premises environments.
 
