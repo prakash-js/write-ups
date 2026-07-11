@@ -11,7 +11,7 @@
 ### Q1 In addition to being a SIEM solution, what else is Microsoft Sentinel? (use the abbreviation)
 > SOAR
 
-**Explaination :**
+**Explanation :**
 
 - Microsoft Sentinel acts as a SIEM by collecting, monitoring, and analyzing security logs from multiple sources to detect threats and suspicious activities.
 - Microsoft Sentinel also functions as a SOAR platform by automating security responses, orchestrating workflows, and reducing manual incident handling through playbooks and automated actions.
@@ -19,7 +19,7 @@
 ### Q2 How does MS Sentinel support other security solutions that are not included in the built-in connectors? 
 > REST API Integration
 
-**Explaination :**
+**Explanation :**
 
 - Microsoft Sentinel supports third-party and unsupported security solutions through REST APIs, allowing external tools and applications to send security data, alerts, and incidents into Sentinel for monitoring and response.
 
@@ -32,7 +32,7 @@
 ### Q1 What initial service was KQL created for?
 > Azure Data Explorer
 
-**Explaination :**
+**Explanation :**
 
 - Kusto Query Language (KQL) was originally created for the Azure Data Explorer (Kusto) service at Microsoft. It was designed to efficiently analyze massive amounts of telemetry, log, and monitoring data in real time.
 
@@ -41,7 +41,7 @@
 ### Q2 Analyze the example query from the task. How many computers will the query return?
 > take 10
 
-**Explaination :**
+**Explanation :**
 
 `take 10` limits the output to only the first 10 results after sorting.
 
@@ -49,7 +49,7 @@
 
 > Heartbeat
 
-** Explaination :**
+** Explanation :**
 
 The query retrieves data from the Heartbeat table because the first line in a KQL query specifies the data source or table being used. All the summarize, sorting, and filtering operations are performed on the records stored in the Heartbeat table.
 
@@ -64,14 +64,14 @@ SecurityEvent
 ### Q1 What operator can be used to output results in graphical form?
 > render
 
-**Explaination :**
+**Explanation :**
 
 `render` converts the query output into a visual chart or graph.
 
 ### Q2 What operator can be used to filter a specified table based on specified conditions?
 > Where
 
-**Explaination :**
+**Explanation :**
 
 where filters the table and returns only rows that match the condition.
 
@@ -79,7 +79,7 @@ where filters the table and returns only rows that match the condition.
 ### Q3 What user account name was queried in our second example query above?
 > JBOX00$
 
-**Explaination :**
+**Explanation :**
 
 The where operator filters the logs and searches for records where:
 `TargetUserName == "JBOX00$"`
@@ -97,14 +97,14 @@ SecurityEvent
 
 > SecurityEvent
 
-**Explaination :**
+**Explanation :**
 
 In KQL, the first line specifies the table being used: `SecurityEvent`
 
 ### Q2 Analyze the example query from the task. What does the query aggregate per computer?
 > EventCount
 
-**Explaination :**
+**Explanation :**
 
 The query uses `summarize EventCount = count() by Computer ` This creates a value called EventCount that stores the count of events for each computer.
 
