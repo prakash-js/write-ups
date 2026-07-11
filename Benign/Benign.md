@@ -10,7 +10,7 @@ Challenge room to investigate a compromised host.
 ### Q1 How many logs are ingested from the month of March, 2022?
 >  13959
 
-**Explaination :**
+**Explanation :**
 - To determine how many logs were ingested during March 2022, I logged into Splunk and used the time picker on the left side of the interface. I selected Date Range, chose the Since option, and entered the date 01/03/2022.
 
 - To view the total number of logs, I executed the following search `index="*"`
@@ -22,7 +22,7 @@ Challenge room to investigate a compromised host.
 ### Q2 Imposter Alert: There seems to be an imposter account observed in the logs, what is the name of that user?
 >  Amel1a
 
-**Explaination :**
+**Explanation :**
 - To identify the suspected imposter account, I first listed all usernames and their occurrence counts using the following Splunk query:
 ```
 index="*"
@@ -40,7 +40,7 @@ index="*"
 ### Q3 Which user from the HR department was observed to be running scheduled tasks?
 > Chris.fort
 
-**Explaination :**
+**Explanation :**
 
 - I first searched for all schtasks activity:
 ```
@@ -71,7 +71,7 @@ This revealed the command: `schtasks /create /tn OfficUpdater /tr "C:\Users\Chri
 ### Q4 Which user from the HR department executed a system process (LOLBIN) to download a payload from a file-sharing host. 
 > Haroon
 
-**Explaination :**
+**Explanation :**
 - The question explicitly mentions a LOLBIN (Living Off The Land Binary), which refers to a legitimate Windows binary that can be abused to perform malicious actions. Common LOLBINs used for downloading payloads include `certutil.exe`, `powershell.exe` (`Invoke-WebRequest`), and `curl.exe`.
 
 - To identify the user who downloaded a payload using a LOLBIN, I searched for common download-related LOLBIN commands:
@@ -89,7 +89,7 @@ index="*"
 ### Q5 To bypass the security controls, which system process (lolbin) was used to download a payload from the internet? 
 > certutil.exe
 
-**Explaination :**
+**Explanation :**
 - As identified in the previous question, the payload was downloaded using certutil.exe, indicating that certutil was the LOLBIN used to bypass security controls and retrieve the file from the internet.
 
 ---
@@ -97,7 +97,7 @@ index="*"
 ### Q6 What was the date that this binary was executed by the infected host? format (YYYY-MM-DD)
 > 2022-03-04
 
-**Explaination :**
+**Explanation :**
 
 - To identify the date on which the binary was executed by the infected host, I searched for the certutil.exe command that was used to download the payload from the external host and reviewed the timestamp of the associated event:
 ```
@@ -112,7 +112,7 @@ CommandLine="*certutil.exe -urlcache -f*https://controlc.com/e4d11035*benign.exe
 ### Q7 Which third-party site was accessed to download the malicious payload?
 > controlc.com
 
-**Explaination :**
+**Explanation :**
 
 - As identified in Question 4, the payload was downloaded using certutil.exe from controlc.com, making controlc.com the third-party site used to host and deliver the malicious payload.
 
@@ -121,7 +121,7 @@ CommandLine="*certutil.exe -urlcache -f*https://controlc.com/e4d11035*benign.exe
 ### Q8 What is the name of the file that was saved on the host machine from the C2 server during the post-exploitation phase?
 >  benign.exe
 
-**Explaination :**
+**Explanation :**
  
  - As identified in Question 4, the payload was downloaded from controlc.com using certutil.exe, and the downloaded file was saved on the host machine as benign.exe.
 
@@ -130,13 +130,13 @@ CommandLine="*certutil.exe -urlcache -f*https://controlc.com/e4d11035*benign.exe
  ### Q9 The suspicious file downloaded from the C2 server contained malicious content with the pattern THM{..........}; what is that pattern?
 > THM{KJ&*H^B0}
 
-**Explaination :**
+**Explanation :**
 To identify the flag, I browsed to the infected URL identified in the previous investigation: `https://controlc.com/e4d11035` The content hosted on the page contained a flag in
 
 ---
 ### Q10 What is the URL that the infected host connected to?
 > https://controlc.com/e4d11035
 
-**Explaination :**
+**Explanation :**
 
 Therefore, the URL contacted by the infected host was `https://controlc.com/e4d11035`
