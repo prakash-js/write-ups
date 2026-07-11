@@ -31,7 +31,7 @@
 
 ---
 
-## Explaination
+## Explanation
 Since the LAN segment details were already provided in the traffic capture, I used that information to understand the network layout and identify normal infrastructure IP addresses. Based on this, I excluded the domain-related IP, the default gateway IP, and the broadcast address to reduce unnecessary background traffic. I also filtered out SSDP traffic, because SSDP is used for normal UPnP device discovery inside a local network and does not indicate malicious behavior.
 
 `ip.addr != 10.6.13.1 && ip.addr != 10.6.13.3 && ip.addr != 10.6.13.255 && !ssdp`
