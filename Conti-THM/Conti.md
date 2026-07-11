@@ -75,7 +75,7 @@ This analysis verified that the `cmd.exe` file located in the Administrator's **
 ### Q2 What is the Sysmon event ID for the related file creation event?
 > 11
 
-**Explaination: **
+**Explaination :**
 
 Sysmon Event ID 11 records File Create events, logging whenever a process creates a new file on the system. During a ransomware attack, this event is particularly valuable because ransomware typically creates ransom notes and writes encrypted files to disk.
 
@@ -145,7 +145,7 @@ index=* host="WIN-AOQKG2AS2Q7" EventCode=3
 | where NOT Like(DestinationIp,"10.10.10.6") 
 | where DestinationIp != "" 
 | table _time SourceIp SourcePort DestinationIp DestinationPort
-| sort time
+| sort _time
 ```
 This left communication with 10.10.10.4 and 10.10.10.2. I identified 10.10.10.4 as the DNS server based on repeated connections to DNS-related ports.
 
@@ -229,7 +229,7 @@ The search returned four events, all showing POST requests from 10.10.10.2 to: `
 
 Repeated POST requests to a randomly named ASPX file in the Exchange OWA path are consistent with active interaction with a web shell rather than the file merely existing unused on the server.
 
-At this point, I had identified i3gfPctK1c2x.aspx as the deployed web shell and confirmed that it was being accessed through the web server.However, I had not yet determined how the file was initially deployed to the system.
+At this point, I had identified i3gfPctK1c2x.aspx as the deployed web shell and confirmed that it was being accessed through the web server. However, I had not yet determined how the file was initially deployed to the system.
 
 ---
 
@@ -237,7 +237,7 @@ At this point, I had identified i3gfPctK1c2x.aspx as the deployed web shell and 
 > attrib.exe  -r \\\\win-aoqkg2as2q7.bellybear.local\C$\Program Files\Microsoft\Exchange Server\V15\FrontEnd\HttpProxy\owa\auth\i3gfPctK1c2x.aspx
 
 **Explaination :**
-This command line was already identified during the Q8 process investigation, where cmd.exe was the parent process and attrib.exe referenced the web-shell file. The -r option removes the read-only attribute from the ASPX file, while the IIS logs identified in Q7 showed successful POST requests to /owa/auth/i3gfPctK1c2x.aspx with HTTP 200 responses. Therefore, the command line associated with the web shell was: `attrib.exe  -r \\\\win-aoqkg2as2q7.bellybear.local\C$\Program Files\Microsoft\Exchange Server\V15\FrontEnd\HttpProxy\owa\auth\i3gfPctK1c2x.aspx`.
+This command line was already identified during the Q8 process investigation, where cmd.exe was the parent process and attrib.exe referenced the web-shell file. The -r option removes the read-only attribute from the ASPX file, while the IIS logs identified in Q7 showed successful POST requests to /owa/auth/i3gfPctK1c2x.aspx. Therefore, the command line associated with the web shell was: `attrib.exe  -r \\\\win-aoqkg2as2q7.bellybear.local\C$\Program Files\Microsoft\Exchange Server\V15\FrontEnd\HttpProxy\owa\auth\i3gfPctK1c2x.aspx`.
 
 ---
 
