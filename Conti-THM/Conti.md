@@ -22,7 +22,7 @@ Task 2
 ### 1) Can you identify the location of the ransomware?
 > C:\Users\Administrator\Documents\cmd.exe
 
-**Explaination:**
+**Explanation:**
  
 Identifying the Ransomware Executable
 
@@ -75,7 +75,7 @@ This analysis verified that the `cmd.exe` file located in the Administrator's **
 ### Q2 What is the Sysmon event ID for the related file creation event?
 > 11
 
-**Explaination :**
+**Explanation :**
 
 Sysmon Event ID 11 records File Create events, logging whenever a process creates a new file on the system. During a ransomware attack, this event is particularly valuable because ransomware typically creates ransom notes and writes encrypted files to disk.
 
@@ -103,7 +103,7 @@ The extracted hash was then verified using VirusTotal, where 52 out of 61 securi
 ### Q4 What file was saved to multiple folder locations?
 > readme.txt
 
-**Explaination :**
+**Explanation :**
 
 Since the lab focuses on post-incident investigation, I first identified when the ransomware executable started running. I searched for the process creation event associated with the previously identified malicious executable:
 ```
@@ -134,7 +134,7 @@ This identified readme.txt as the file saved across multiple folder locations, c
 ### Q5 What was the command the attacker used to add a new user to the compromised system?
 > net user /add securityninja hardToHack123$
 
-**Explaination :**
+**Explanation :**
 I initially suspected that the user-creation command would appear after cmd.exe execution, but the timeline did not support that assumption.
 
 I then analyzed Sysmon Event ID 3 network connections and filtered out loopback and self-connections. 
@@ -168,7 +168,7 @@ Searching Sysmon Event ID 1 process-creation logs within this period revealed th
 ### Q6 The attacker migrated the process for better persistence. What is the migrated process image (executable), and what is the original process image (executable) when the attacker got on the system?
 > C:\Windows\System32\WindowsPowerShell\v1.0\powershell.exe,C:\Windows\System32\wbem\unsecapp.exe
 
-**Explaination :**
+**Explanation :**
 The question indicated that the attacker migrated the process after gaining access to the compromised system. Since process migration can involve creating a thread inside another process, I searched for Sysmon Event ID 8 (CreateRemoteThread) within the previously identified attack timeframe.
 ```
 index="*" EventCode=8 host="WIN-AOQKG2AS2Q7"
@@ -197,7 +197,7 @@ The first event showed the attacker migrating from powershell.exe into unsecapp.
 ### Q8 What is the web shell the exploit deployed to the system?
 > i3gfPctK1c2x.aspx
 
-**Explaination :**
+**Explanation :**
 While investigating Q5, I reviewed the same Sysmon Event ID 1 process-creation results:
 
 ```
@@ -236,7 +236,7 @@ At this point, I had identified i3gfPctK1c2x.aspx as the deployed web shell and 
 ### Q9 What is the command line that executed this web shell?
 > attrib.exe  -r \\\\win-aoqkg2as2q7.bellybear.local\C$\Program Files\Microsoft\Exchange Server\V15\FrontEnd\HttpProxy\owa\auth\i3gfPctK1c2x.aspx
 
-**Explaination :**
+**Explanation :**
 This command line was already identified during the Q8 process investigation, where cmd.exe was the parent process and attrib.exe referenced the web-shell file. The -r option removes the read-only attribute from the ASPX file, while the IIS logs identified in Q7 showed successful POST requests to /owa/auth/i3gfPctK1c2x.aspx. Therefore, the command line associated with the web shell was: `attrib.exe  -r \\\\win-aoqkg2as2q7.bellybear.local\C$\Program Files\Microsoft\Exchange Server\V15\FrontEnd\HttpProxy\owa\auth\i3gfPctK1c2x.aspx`.
 
 ---
