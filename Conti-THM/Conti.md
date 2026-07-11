@@ -120,7 +120,7 @@ index="*" host="WIN-A0QKG2AS2Q7" EventCode="11"
 | eval FileName=mvindex(split(TargetFilename,"\\"),-1)
 | stats count by FileName
 | sort - count
-````
+```
 The TargetFilename field contains the full path of each created file. The split() function separates the path at each backslash (\), and mvindex(...,-1) selects the final value, leaving only the filename.
 
 I then used stats count by FileName to count how many times each filename appeared and sorted the results in descending order. The results showed that readme.txt was created 18 times, while the other files appeared only once.
