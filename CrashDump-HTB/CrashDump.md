@@ -23,7 +23,7 @@ The provided .dmp file was analyzed using WinDbg. The dump file was loaded by na
 ### Provide the operating system version.
 > 10.0.10240.16384
 
-**Explaination :**
+**Explanation :**
 
 As an initial step, I opened the `update.dmp` file in WinDbg because the scenario mentioned a suspicious executable that may have been used by the attacker to establish a foothold on the compromised system. After loading the dump file, WinDbg suggested running the !analyze -v command for verbose analysis. I executed the command to perform an initial inspection of the dump file and gather debugging and process-related information from memory. From the analysis output, I identified the operating system version as `10.0.10240.16384` along with other system information.
 
@@ -32,7 +32,7 @@ As an initial step, I opened the `update.dmp` file in WinDbg because the scenari
 Provide the full path of the malicious executable used to gain initial access.
 > C:\Users\s1rx\Downloads\update.exe
 
-**Explaination :**
+**Explanation :**
 
 After executing the !analyze -v command in WinDbg, I reviewed the analysis output and checked the MODULE_NAME: update section, which contained information related to the suspicious process. From this section, I identified the image path: `C:\Users\s1rx\Downloads\update.exe`
 
@@ -41,7 +41,7 @@ After executing the !analyze -v command in WinDbg, I reviewed the analysis outpu
 How many threads did the malicious process use?
 > 6
 
-**Explaination :**
+**Explanation :**
 
 To find the number of threads, I used the ~ command in the WinDbg command box. The output lists all threads starting from index 0, so the total count is the last index + 1. In this case, the last index was 5, giving us 6 threads in total.
 
@@ -50,7 +50,7 @@ To find the number of threads, I used the ~ command in the WinDbg command box. T
 ### Provide the named pipe (IPC channel) used by the malicious process.
 > MSSE-1641-server
 
-**Explaination :**
+**Explanation :**
 - A named pipe is an IPC (Inter-Process Communication) channel used by processes to communicate with each other on the same system or across a network.
 
 - To identify the named pipe used by the suspicious process, I first inspected the process handles in WinDbg using the command
@@ -83,7 +83,7 @@ To find the number of threads, I used the ~ command in the WinDbg command box. T
 ### Provide the PID of the injected process. Provide the Answer in decimal.
 > 2336
 
-**Explaination :**
+**Explanation :**
 - In this task I want to find which process update.exe is injected into.
 
 - For that I used the command `!handle 0 f Thread`  which helps to get detailed information about the thread handles.
@@ -97,7 +97,7 @@ To find the number of threads, I used the ~ command in the WinDbg command box. T
 ###  At what time was the last thread created for the injected process? Provide the timestamp in UTC.
 > 2025-11-05 01:09:12
 
-**Explaination :**
+**Explanation :**
 - To find the last thread created for the injected process, I opened the notepad.exe dump file (PID 920) in WinDbg. 
 
 - Then I ran !runaway 7 which showed three types of time for each thread — User Mode Time, Kernel Mode Time, and Elapsed Time.I focused on the Elapsed Time because it tells us how long each thread has been running since it was created. The thread that has been running for the shortest time means it was created last.From the output, Thread 3:2d0 had the smallest elapsed time of 0:05:24.068 compared to all other threads — which means it was created last among all the threads in the injected process.
@@ -115,7 +115,7 @@ To find the number of threads, I used the ~ command in the WinDbg command box. T
 ### Provide the BaseAddress of the injected shellcode.
 > b1`20870000
 
-**Explaination :**
+**Explanation :**
 
 Since we already identified in Task 5 that the injected process was notepad.exe (PID 920), I opened its dump file in WinDbg to inspect its memory layout.
 I then ran `!address` to view all memory regions that notepad.exe was using at the time the dump was captured.
@@ -134,7 +134,7 @@ After applying the filter, 3 suspicious regions appeared. I eliminated ```b1`221
 ### Provide the C2 server IP address.
 > 101.10.25.4
 
-**Explaination :**
+**Explanation :**
 
 To find the C2 server IP, I searched for the string http across the suspicious memory regions using ```s -a b1`20870000 L?8e00000000 "http"```. This returned multiple hits, and among them I noticed a non-localhost IP starting with "101.10.25". To retrieve the full IP address, I then searched specifically for that string using ```s -a b1`20870000 L?800000000 "101.10.25"```, which revealed the complete C2 server IP address.
 
@@ -143,7 +143,7 @@ To find the C2 server IP, I searched for the string http across the suspicious m
 ### Provide the name of the C2 framework used by the threat actor.
 > Cobalt Strike
 
-**Explaination :**
+**Explanation :**
 
 To identify the C2 framework, I analyzed the overall behavior pattern observed throughout the investigation rather than relying on a single indicator.
 
