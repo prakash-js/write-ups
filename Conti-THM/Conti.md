@@ -237,7 +237,7 @@ At this point, I had identified i3gfPctK1c2x.aspx as the deployed web shell and 
 > attrib.exe  -r \\\\win-aoqkg2as2q7.bellybear.local\C$\Program Files\Microsoft\Exchange Server\V15\FrontEnd\HttpProxy\owa\auth\i3gfPctK1c2x.aspx
 
 **Explanation :**
-This command line was already identified during the Q8 process investigation, where cmd.exe was the parent process and attrib.exe referenced the web-shell file. The -r option removes the read-only attribute from the ASPX file, while the IIS logs identified in Q7 showed successful POST requests to /owa/auth/i3gfPctK1c2x.aspx. Therefore, the command line associated with the web shell was: `attrib.exe  -r \\\\win-aoqkg2as2q7.bellybear.local\C$\Program Files\Microsoft\Exchange Server\V15\FrontEnd\HttpProxy\owa\auth\i3gfPctK1c2x.aspx`.
+This command line was already identified during the Q8 process investigation, where cmd.exe was the parent process and attrib.exe referenced the web-shell file. The -r option removes the read-only attribute from the ASPX file, while the IIS logs identified in Q8 showed successful POST requests to /owa/auth/i3gfPctK1c2x.aspx. Therefore, the command line associated with the web shell was: `attrib.exe  -r \\\\win-aoqkg2as2q7.bellybear.local\C$\Program Files\Microsoft\Exchange Server\V15\FrontEnd\HttpProxy\owa\auth\i3gfPctK1c2x.aspx`.
 
 ---
 
