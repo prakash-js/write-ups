@@ -20,7 +20,7 @@ Happy Hunting!
 
 > OUTSTANDING_GUTTER.exe
 
-**Explaination:**
+**Explanation:**
 
 ```
 SPL:
@@ -94,7 +94,7 @@ After decoding, I found the original PowerShell command, which contained the URL
 
 > C:\Windows\System32\WindowsPowerShell\v1.0\powershell.exe
 
-**Explaination:**
+**Explanation:**
 
 To identify which Windows executable was used to download the suspicious binary, I reviewed the events related to OUTSTANDING_GUTTER.exe.
 
@@ -112,7 +112,7 @@ This indicates that PowerShell was used to download and create the suspicious ex
 
 > "C:\Windows\system32\schtasks.exe" /Create /TN OUTSTANDING_GUTTER.exe /TR C:\Windows\Temp\COUTSTANDING_GUTTER.exe /SC ONEVENT /EC Application /MO *[System/EventID=777] /RU SYSTEM /f
 
-**Explaination:**
+**Explanation:**
 
 
 Where we can see the command is from the decoded PowerShell command. After decoding the encoded PowerShell payload, I found the command used to configure the suspicious binary to run with elevated privileges.
@@ -138,7 +138,7 @@ This command immediately runs the scheduled task, causing the malware to execute
 
  > NT AUTHORITY\SYSTEM;”C:\Windows\system32\schtasks.exe” /Run /TN OUTSTANDING_GUTTER.exe
 
-**Explaination :**
+**Explanation :**
 
 To find the command executed with elevated privileges, I searched Sysmon EventCode=1 (Process Creation), filtering by ParentCommandLine containing the encoded PowerShell command.
 ```
